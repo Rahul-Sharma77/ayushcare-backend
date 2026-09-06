@@ -1,0 +1,18 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/>{
+  "name": "ayushcare-backend",
+  "version": "1.0.0",
+  "description": "AyushCare API for SIH26047",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.5.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
