@@ -70,7 +70,7 @@ app.post('/api/ai', async (req, res) => {
     }
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3.6-flash',
       contents: prompt,
       config: {
         systemInstruction: SYSTEM_PROMPT(language),
