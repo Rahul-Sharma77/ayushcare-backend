@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const { GoogleGenAI } = require('@google/genai');
 require('dotenv').config();
 
 const app = express();
@@ -38,59 +39,52 @@ const Report = mongoose.model('Report', new mongoose.Schema({
 }, { timestamps: true }));
 
 // ===== GEMINI AI WITH STRICT RULES =====
-app.post('/api/ai', async (req, res) => {
-  try {
-    const { prompt, language } = req.body;
-    const apiKey = process.env.GEMINI_API_KEY;
+let ai = null;
+if (process.env.GEMINI_API_KEY) {
+  ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+} else {
+  console.log('⚠️ GEMINI_API_KEY not set — /api/ai will return fallback responses');
+}
 
-    if (!prompt) return res.status(400).json({ success: false, message: 'Prompt required' });
-    if (!apiKey) {
-      return res.json({ 
-        success: false, 
-        fallback: true, 
-        message: 'GEMINI_API_KEY not configured in Render environment variables.' 
-      });
-    }
-
-    // STRICT RULES SYSTEM PROMPT
-    const systemPrompt = `You are "AyushMitra", an AI health assistant for AyushCare (Ministry of AYUSH software).
+const SYSTEM_PROMPT = (language) => `You are "AyushMitra", an AI health assistant for AyushCare (Ministry of AYUSH software).
 
 STRICT RULES:
 1. NEVER prescribe medicines, chemical names, or exact dosages. If asked for medicine, say: "Only a registered doctor can prescribe medicine."
-2. EMERGENCY TRIAGE: If user mentions chest pain, severe breathlessness, sudden weakness/stroke, unconsciousness, or heavy bleeding, IMMEDIATELY reply in BOLD: "🚨 THIS MAY BE AN EMERGENCY! Please call 108 Ambulance immediately."
-3. AYUSH GUIDANCE: For mild complaints, suggest safe traditional AYUSH lifestyle tips (warm water, ginger/tulsi tea, light diet/Pathya, sleep hygiene, gentle Yoga/Pranayama).
-4. LANGUAGE: Answer in the EXACT language requested: "${language || 'Hindi/English'}".
-5. LENGTH: Keep responses under 80 words. Be polite, simple, and rural-user friendly.`;
+2. NEVER give a diagnosis.
+3. EMERGENCY TRIAGE: If the user mentions chest pain, severe breathlessness, sudden weakness/stroke, unconsciousness, or heavy bleeding, IMMEDIATELY reply in BOLD: "🚨 THIS MAY BE AN EMERGENCY! Please call 108 Ambulance immediately."
+4. AYUSH GUIDANCE: For mild complaints, suggest safe traditional AYUSH lifestyle tips (warm water, ginger/tulsi tea, light diet/Pathya, sleep hygiene, gentle Yoga/Pranayama).
+5. LANGUAGE: Answer in the EXACT language requested: "${language || 'Hindi/English'}".
+6. LENGTH: Keep responses under 80 words. Be polite, simple, and rural-user friendly.`;
 
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+app.post('/api/ai', async (req, res) => {
+  try {
+    const { prompt, language } = req.body;
 
-    const apiRes = await fetch(geminiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{
-          role: 'user',
-          parts: [{ text: `${systemPrompt}\n\nUser Question: ${prompt}` }]
-        }],
-        generationConfig: {
-          temperature: 0.3, // Lower temperature = more consistent adherence to rules
-          maxOutputTokens: 250
-        }
-      })
-    });
-
-    if (!apiRes.ok) {
-      console.log('Gemini API HTTP Error:', apiRes.status);
-      return res.json({ success: false, fallback: true });
+    if (!prompt) return res.status(400).json({ success: false, message: 'Prompt required' });
+    if (!ai) {
+      return res.json({
+        success: false,
+        fallback: true,
+        message: 'GEMINI_API_KEY not configured in Render environment variables.'
+      });
     }
 
-    const data = await apiRes.json();
-    const replyText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt,
+      config: {
+        systemInstruction: SYSTEM_PROMPT(language),
+        temperature: 0.3,      // lower = more consistent adherence to the strict rules
+        maxOutputTokens: 300
+      }
+    });
+
+    const replyText = response.text;
 
     if (replyText) {
       res.json({ success: true, reply: replyText.trim() });
     } else {
-      res.json({ success: false, fallback: true });
+      res.json({ success: false, fallback: true, message: 'Empty response from Gemini' });
     }
   } catch (err) {
     console.error('AI Error:', err.message);
