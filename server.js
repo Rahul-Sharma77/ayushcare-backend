@@ -503,6 +503,48 @@ app.get('/api/search', async (req, res) => {
 });
 
 // =====================================================
+// DELETE PATIENT REPORT (patient can remove their own old report)
+// =====================================================
+
+app.delete('/api/report/:reportId', async (req, res) => {
+  try {
+    const { reportId } = req.params;
+    const phone = String(req.query.phone || '').replace(/\D/g, '');
+
+    if (!reportId || !phone) {
+      return res.status(400).json({
+        success: false,
+        message: 'reportId and phone are required'
+      });
+    }
+
+    // Scoped to the requesting patient's own phone so one patient
+    // cannot delete another patient's report.
+    const deleted = await Report.findOneAndDelete({
+      reportId,
+      patientPhone: phone
+    });
+
+    if (!deleted) {
+      return res.status(404).json({
+        success: false,
+        message: 'Report not found for this patient'
+      });
+    }
+
+    res.json({
+      success: true,
+      reportId
+    });
+  } catch (e) {
+    res.status(500).json({
+      success: false,
+      message: e.message
+    });
+  }
+});
+
+// =====================================================
 // DOCTOR REPORTS
 // =====================================================
 
