@@ -1,0 +1,1331 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>AyushCare - Clinical Case System</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22></text></svg>">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{--g1:#047857;--g2:#059669;--g3:#10b981;--g4:#d1fae5;--g5:#f0fdf4;--saf:#f59e0b;--red:#dc2626;--red2:#ef4444;--ink:#0f172a;--muted:#64748b;--line:#e2e8f0;--card:#ffffff;--shadow:0 6px 20px rgba(4,120,87,.08);--shadow2:0 15px 40px rgba(4,120,87,.15);}
+body{font-family:'Inter','Segoe UI',system-ui,-apple-system,'Noto Sans',sans-serif;color:var(--ink);background:linear-gradient(135deg,#f8fafc 0%,#f0fdf4 50%,#ecfdf5 100%);min-height:100vh;background-attachment:fixed;overflow-x:hidden;line-height:1.5}
+button,input,select,textarea{font-family:inherit;font-size:16px;outline:none}
+button{cursor:pointer;border:none;background:none;transition:.2s ease}
+a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-thumb{background:var(--g3);border-radius:10px}
+.wrap{max-width:540px;margin:0 auto;padding:16px;padding-bottom:100px}
+.wrap-lg{max-width:900px;margin:0 auto;padding:20px;padding-bottom:100px}
+.center{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px}
+.row{display:flex;align-items:center}.between{display:flex;align-items:center;justify-content:space-between}
+.gap8{gap:8px}.gap12{gap:12px}
+.mt8{margin-top:8px}.mt12{margin-top:12px}.mt16{margin-top:16px}.mt24{margin-top:24px}
+.mb8{margin-bottom:8px}.mb12{margin-bottom:12px}.mb16{margin-bottom:16px}.mb24{margin-bottom:24px}
+.tc{text-align:center}.bold{font-weight:700}.semi{font-weight:600}
+.muted{color:var(--muted)}.green{color:var(--g1)}.red{color:var(--red)}
+.t-xs{font-size:12px}.t-sm{font-size:14px}.t-lg{font-size:19px}.t-xl{font-size:24px}.t-2xl{font-size:30px}.t-3xl{font-size:38px}
+.hdr{background:#fff;color:var(--g1);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 12px rgba(0,0,0,.04);position:sticky;top:0;z-index:50;border-bottom:1px solid var(--line)}
+.hdr h1{font-size:19px;font-weight:800;letter-spacing:-.4px}
+.hdr-btn{background:var(--g5);color:var(--g1);padding:8px 14px;border-radius:22px;font-size:13px;font-weight:700;border:1px solid var(--g4)}
+.hdr-btn:active{transform:scale(.94);background:var(--g4)}
+.hdr-btn.dark{background:var(--g1);color:#fff;border-color:var(--g1)}
+.card{background:var(--card);border-radius:22px;padding:22px;box-shadow:var(--shadow);margin-bottom:14px;animation:rise .35s ease;border:1px solid #f1f5f9}
+.card-hero{background:linear-gradient(135deg,var(--g1) 0%,var(--g2) 50%,#0d9488 100%);color:#fff;border-radius:24px;padding:24px;box-shadow:var(--shadow2);position:relative;overflow:hidden}
+.card-hero::before{content:'';position:absolute;top:-40px;right:-40px;width:150px;height:150px;background:rgba(255,255,255,.1);border-radius:50%}
+.card-hero::after{content:'';position:absolute;right:-8px;bottom:-20px;font-size:100px;opacity:.12}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:17px;border-radius:16px;font-size:17px;font-weight:700;transition:.2s;background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;box-shadow:0 8px 20px rgba(4,120,87,.28)}
+.btn:active{transform:scale(.97)}
+.btn-o{background:#fff;color:var(--g1);border:2px solid var(--g2);box-shadow:var(--shadow)}
+.btn-red{background:linear-gradient(135deg,#dc2626,#ef4444);box-shadow:0 8px 20px rgba(220,38,38,.28)}
+.btn-saf{background:linear-gradient(135deg,#f59e0b,#f97316);box-shadow:0 8px 20px rgba(245,158,11,.28)}
+.btn-wa{background:linear-gradient(135deg,#22c55e,#16a34a);box-shadow:0 8px 20px rgba(34,197,94,.28)}
+.btn-blue{background:linear-gradient(135deg,#2563eb,#3b82f6);box-shadow:0 8px 20px rgba(37,99,235,.28)}
+.btn-gray{background:#64748b;box-shadow:none}
+.btn-sm{padding:11px 16px;font-size:14px;border-radius:12px;width:auto}
+.lbl{display:block;font-size:15px;font-weight:700;margin-bottom:8px;color:var(--ink)}
+.inp{width:100%;padding:15px;border:2px solid var(--line);border-radius:14px;background:#f8fafc;transition:.2s;font-size:16px}
+.inp:focus{border-color:var(--g3);background:#fff;box-shadow:0 0 0 4px var(--g5)}
+.inp-row{display:flex;gap:10px;align-items:stretch}.inp-row .inp{flex:1}
+textarea.inp{resize:vertical;min-height:88px}
+.mic{width:54px;min-width:54px;border-radius:14px;font-size:22px;background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 15px rgba(4,120,87,.3);transition:.2s}
+.mic:active{transform:scale(.92)}
+.mic.on{background:linear-gradient(135deg,#dc2626,#ef4444);animation:mpulse 1s infinite}
+@keyframes mpulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(220,38,38,.6)}50%{transform:scale(1.1);box-shadow:0 0 0 14px rgba(220,38,38,0)}}
+.spk{background:var(--g4);color:var(--g1);width:42px;height:42px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:18px}
+.lang-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%;max-width:420px}
+.lang-card{background:#fff;border:2px solid var(--line);border-radius:20px;padding:22px 10px;text-align:center;box-shadow:var(--shadow);transition:.2s}
+.lang-card:active{transform:scale(.94);border-color:var(--g2);background:var(--g5)}
+.lang-card .fl{font-size:36px;display:block;margin-bottom:6px;color:var(--g1);font-weight:800;line-height:1}
+.lang-card .nm{font-size:17px;font-weight:700;color:var(--ink)}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{background:#fff;border-radius:18px;padding:18px 10px;text-align:center;box-shadow:var(--shadow);transition:.2s;border:1px solid #f1f5f9;position:relative}
+.tile:active{transform:scale(.95);background:var(--g5)}
+.tile .ic{font-size:32px;display:block;margin-bottom:8px}
+.tile .tx{font-size:13px;font-weight:700;color:#334155;line-height:1.3}
+.tile .badge{position:absolute;top:8px;right:8px;background:var(--red);color:#fff;font-size:10px;padding:2px 7px;border-radius:10px;font-weight:800}
+.cats{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 12px;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.chip{white-space:nowrap;padding:10px 16px;border-radius:24px;background:#fff;border:2px solid var(--line);font-size:13px;font-weight:700;color:#475569;flex-shrink:0}
+.chip.on{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;border-color:var(--g1);box-shadow:0 5px 14px rgba(4,120,87,.3)}
+.sym-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-height:360px;overflow-y:auto;padding:4px}
+.sym{background:#fff;border:2px solid var(--line);border-radius:16px;padding:12px 5px;text-align:center;transition:.2s;position:relative}
+.sym:active{transform:scale(.93)}
+.sym.on{background:linear-gradient(135deg,var(--g1),var(--g2));border-color:var(--g1);color:#fff;box-shadow:0 6px 16px rgba(4,120,87,.35);transform:translateY(-2px)}
+.sym .ic{font-size:26px;display:block;margin-bottom:4px}
+.sym .nm{font-size:11px;font-weight:700;line-height:1.25}
+.sym .flag{position:absolute;top:3px;right:5px;font-size:11px}
+.opts{display:grid;gap:9px}
+.opts.c2{grid-template-columns:1fr 1fr}.opts.c3{grid-template-columns:repeat(3,1fr)}
+.opt{padding:13px 8px;border:2px solid var(--line);border-radius:14px;background:#fff;font-size:14px;font-weight:700;color:#475569;text-align:center;transition:.2s}
+.opt:active{transform:scale(.95)}
+.opt.on{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;border-color:var(--g1);box-shadow:0 5px 14px rgba(4,120,87,.3)}
+.opt.on.sev-h{background:linear-gradient(135deg,#dc2626,#ef4444);border-color:#dc2626}
+.opt.on.sev-m{background:linear-gradient(135deg,#f59e0b,#f97316);border-color:#f59e0b}
+.chk{display:flex;align-items:center;gap:10px;padding:14px;border:2px solid var(--line);border-radius:14px;background:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:.2s}
+.chk.on{border-color:var(--g2);background:var(--g5)}
+.chk input{width:20px;height:20px;accent-color:var(--g1)}
+.prog-wrap{background:#fff;border-radius:16px;padding:14px 18px;box-shadow:var(--shadow);margin-bottom:14px;border:1px solid #f1f5f9}
+.prog-bar{height:8px;background:#e2e8f0;border-radius:10px;overflow:hidden;margin-top:9px}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--g1),var(--g3));border-radius:10px;transition:width .5s ease}
+.steps{display:flex;justify-content:space-between;margin-top:10px}
+.step{width:26px;height:26px;border-radius:50%;background:#e2e8f0;color:#94a3b8;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}
+.step.done{background:var(--g2);color:#fff}
+.step.now{background:var(--g1);color:#fff;box-shadow:0 0 0 4px var(--g5)}
+.chat{padding:16px;display:flex;flex-direction:column;gap:12px;min-height:calc(100vh - 200px);overflow-y:auto;padding-bottom:100px}
+.bub{max-width:82%;padding:14px 16px;border-radius:20px;font-size:15px;line-height:1.5;box-shadow:0 2px 10px rgba(0,0,0,.05);animation:rise .3s}
+.bub.ai{background:#fff;border-bottom-left-radius:6px;align-self:flex-start;border:1px solid var(--line)}
+.bub.me{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;border-bottom-right-radius:6px;align-self:flex-end}
+.bub.warn{background:linear-gradient(135deg,#fef3c7,#fed7aa);border:2px solid var(--saf)}
+.chat-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;padding:12px;display:flex;gap:8px;box-shadow:0 -4px 20px rgba(0,0,0,.08);max-width:540px;margin:0 auto;border-top:1px solid var(--line)}
+.quick{display:flex;gap:8px;overflow-x:auto;padding:0 16px 12px;scrollbar-width:none}
+.quick::-webkit-scrollbar{display:none}
+.qbtn{white-space:nowrap;background:var(--g4);color:var(--g1);padding:9px 14px;border-radius:18px;font-size:12px;font-weight:700;flex-shrink:0}
+.alert{padding:14px;border-radius:14px;font-size:14px;font-weight:600;line-height:1.5;display:flex;gap:10px}
+.alert-red{background:#fef2f2;border:2px solid #fecaca;color:#991b1b}
+.alert-warn{background:#fffbeb;border:2px solid #fcd34d;color:#92400e}
+.alert-ok{background:var(--g5);border:2px solid var(--g4);color:var(--g1)}
+.alert-blue{background:#eff6ff;border:2px solid #bfdbfe;color:#1e40af}
+#toasts{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;width:92%;max-width:420px}
+.toast{background:var(--ink);color:#fff;padding:14px 16px;border-radius:14px;font-size:14px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.25);animation:drop .3s;line-height:1.4}
+.toast.ok{background:linear-gradient(135deg,var(--g1),var(--g2))}
+.toast.err{background:linear-gradient(135deg,#dc2626,#ef4444)}
+.toast.warn{background:linear-gradient(135deg,#f59e0b,#f97316)}
+@keyframes drop{from{opacity:0;transform:translateY(-18px)}to{opacity:1;transform:none}}
+#loader{position:fixed;inset:0;background:rgba(255,255,255,.92);z-index:9998;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px;backdrop-filter:blur(4px)}
+.spin{width:52px;height:52px;border:5px solid var(--g4);border-top-color:var(--g1);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.rv{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px dashed var(--line)}
+.rv:last-child{border:none}
+.rv .k{font-size:13px;color:var(--muted);font-weight:600;min-width:100px}
+.rv .v{font-size:14px;font-weight:700;text-align:right;flex:1;word-break:break-word}
+.rep-card{background:#fff;border-radius:18px;padding:16px;box-shadow:var(--shadow);margin-bottom:12px;border-left:5px solid var(--g2)}
+.rep-card.sev{border-left-color:var(--red)}
+.rep-card.reviewed{border-left-color:#2563eb;background:linear-gradient(135deg,#f8fafc,#eff6ff)}
+.pill{display:inline-block;padding:4px 12px;border-radius:12px;font-size:11px;font-weight:800}
+.pill-g{background:var(--g4);color:var(--g1)}
+.pill-y{background:#fef3c7;color:#92400e}
+.pill-r{background:#fee2e2;color:#991b1b}
+.pill-b{background:#dbeafe;color:#1e40af}
+.bnav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;box-shadow:0 -4px 20px rgba(0,0,0,.06);max-width:540px;margin:0 auto;z-index:40;padding:10px 0 12px;border-radius:22px 22px 0 0;border-top:1px solid var(--line)}
+.bnav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;font-weight:700;color:#94a3b8;padding:5px}
+.bnav button.on{color:var(--g1)}
+.bnav .bi{font-size:22px}
+.qr-box{background:#fff;padding:16px;border-radius:18px;display:inline-block;box-shadow:var(--shadow2);border:3px solid var(--g4)}
+.qr-box img{display:block;image-rendering:pixelated}
+.bodymap{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.bp{padding:11px 5px;border:2px solid var(--line);border-radius:13px;background:#fff;font-size:12px;font-weight:700;text-align:center;transition:.2s}
+.bp.on{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;border-color:var(--g1)}
+.review-badge{display:inline-flex;align-items:center;gap:6px;background:#dbeafe;color:#1e40af;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:800;margin-left:8px}
+.action-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.doc-img{width:100%;border-radius:12px;max-height:220px;object-fit:cover;display:block}
+</style>
+</head>
+<body>
+
+<script>
+/* ═══════════ CONFIG ═══════════ */
+const API_URL = 'https://ayushcare-backend1.onrender.com';
+
+/* ═══════════ 6 DOCTOR ACCOUNTS ═══════════ */
+const DOCTORS = [
+  { id: 'govind', name: 'Dr. Govind', email: 'govind@ayush.com', password: 'Govind@123' },
+  { id: 'jaina', name: 'Dr. Jaina', email: 'jaina@ayush.com', password: 'Jaina@123' },
+  { id: 'kartik', name: 'Dr. Kartik', email: 'kartik@ayush.com', password: 'Kartik@123' },
+  { id: 'rahul', name: 'Dr. Rahul', email: 'rahul@ayush.com', password: 'Rahul@123' },
+  { id: 'karan', name: 'Dr. Karan', email: 'karan@ayush.com', password: 'Karan@123' },
+  { id: 'abhishek', name: 'Dr. Abhishek', email: 'abhishek@ayush.com', password: 'Abhishek@123' }
+];
+
+let currentDoctor = JSON.parse(localStorage.getItem('ac_doctor') || 'null');
+</script>
+
+<div id="toasts"></div>
+<div id="loader"><div class="spin"></div><div class="semi green">Please wait...</div></div>
+<div id="app"></div>
+
+<script>
+/* ═══════════ TRANSLATIONS ═══════════ */
+const T={
+en:{app:"AyushCare",tag:"Clinical Case System",welcome:"Welcome",selLang:"Select your language",newP:"New Patient",oldP:"Existing Patient",doctor:"Doctor",emergency:"Emergency",name:"Full Name",age:"Age",gender:"Gender",male:"Male",female:"Female",other:"Other",phone:"Mobile Number",address:"Village / City",cont:"Continue",back:"Back",next:"Next",submit:"Submit Report",home:"Home",reports:"Reports",ai:"AI Help",newCase:"Start New Consultation",myRep:"My Reports",aiAsst:"Ayush Mitra",upload:"Upload Reports",clinic:"Find Clinic",medRem:"Medicine Reminder",family:"Family",whatProb:"What is your problem?",speakSel:"Speak or tap symptoms",search:"Search symptom...",where:"Where is the problem?",dur:"Since when?",sev:"How severe?",mild:"Mild",mod:"Moderate",severe:"Severe",desc:"Describe in your words",worse:"What makes it worse?",better:"What gives relief?",otherSym:"Other symptoms?",cond:"Existing conditions?",allergy:"Any allergy?",meds:"Current medicines?",famHist:"Family history?",appetite:"Appetite",digestion:"Digestion",sleep:"Sleep",stress:"Stress",exercise:"Exercise",habits:"Habits",extra:"Anything else for the doctor?",review:"Review & Submit",confirm:"I confirm this information is correct",done:"Report Ready!",dl:"Download PDF",share:"Share on WhatsApp",goHome:"Back to Home",typeMsg:"Type or speak...",listen:"Listen",sos:"Call 108 Ambulance",docLogin:"Doctor Login",email:"Email",pass:"Password",login:"Login",searchP:"Search patient by mobile",pDetails:"Patient Details",noRep:"No reports yet",logout:"Logout",hi:"Hello",none:"None",good:"Good",normal:"Normal",low:"Low",high:"High",daily:"Daily",sometimes:"Sometimes",never:"Never",saved:"Report saved successfully",reg:"Registered successfully",selectOne:"Please select at least one",d1:"1-3 days",d2:"1 week",d3:"1 month",d4:"3 months",d5:"6+ months",d6:"Years"},
+hi:{app:"आयुष्केयर",tag:"क्लिनिकल केस सिस्टम",welcome:"स्वागत है",selLang:"अपनी भाषा चुनें",newP:"नया रोगी",oldP:"पुराना रोगी",doctor:"डॉक्टर",emergency:"आपातकाल",name:"पूरा नाम",age:"उम्र",gender:"लिंग",male:"पुरुष",female:"महिला",other:"अन्य",phone:"मोबाइल नंबर",address:"गाँव / शहर",cont:"आगे बढ़ें",back:"वापस",next:"अगला",submit:"रिपोर्ट जमा करें",home:"होम",reports:"रिपोर्ट",ai:"AI मदद",newCase:"नई जांच शुरू करें",myRep:"मेरी रिपोर्ट",aiAsst:"आयुष मित्र",upload:"रिपोर्ट अपलोड",clinic:"क्लिनिक खोजें",medRem:"दवा रिमाइंडर",family:"परिवार",whatProb:"आपकी क्या समस्या है?",speakSel:"बोलें या लक्षण दबाएं",search:"लक्षण खोजें...",where:"समस्या कहाँ है?",dur:"कब से है?",sev:"कितनी गंभीर?",mild:"हल्की",mod:"मध्यम",severe:"गंभीर",desc:"अपने शब्दों में बताएं",worse:"कब बढ़ती है?",better:"कब आराम मिलता है?",otherSym:"और कोई लक्षण?",cond:"कोई पुरानी बीमारी?",allergy:"कोई एलर्जी?",meds:"अभी कोई दवा?",famHist:"परिवार में बीमारी?",appetite:"भूख",digestion:"पाचन",sleep:"नींद",stress:"तनाव",exercise:"व्यायाम",habits:"आदतें",extra:"डॉक्टर को और कुछ बताना है?",review:"जांचें और जमा करें",confirm:"मैं पुष्टि करता हूँ कि जानकारी सही है",done:"रिपोर्ट तैयार!",dl:"PDF डाउनलोड",share:"WhatsApp शेयर",goHome:"होम पर जाएं",typeMsg:"लिखें या बोलें...",listen:"सुनें",sos:"108 एम्बुलेंस कॉल",docLogin:"डॉक्टर लॉगिन",email:"ईमेल",pass:"पासवर्ड",login:"लॉगिन",searchP:"मोबाइल से रोगी खोजें",pDetails:"रोगी विवरण",noRep:"अभी कोई रिपोर्ट नहीं",logout:"लॉगआउट",hi:"नमस्ते",none:"कोई नहीं",good:"अच्छी",normal:"सामान्य",low:"कम",high:"ज्यादा",daily:"रोज",sometimes:"कभी-कभी",never:"कभी नहीं",saved:"रिपोर्ट सफलतापूर्वक सहेजी गई",reg:"पंजीकरण सफल",selectOne:"कृपया एक चुनें",d1:"1-3 दिन",d2:"1 सप्ताह",d3:"1 महीना",d4:"3 महीने",d5:"6+ महीने",d6:"कई साल"},
+bn:{app:"আয়ুষকেয়ার",tag:"ক্লিনিক্যাল",welcome:"স্বাগতম",newP:"নতুন রোগী",oldP:"পুরাতন রোগী",doctor:"ডাক্তার",emergency:"জরুরী",name:"নাম",age:"বয়স",gender:"লিঙ্গ",male:"পুরুষ",female:"মহিলা",other:"অন্যান্য",phone:"মোবাইল",address:"গ্রাম",cont:"এগিয়ে",back:"পিছনে",next:"পরবর্তী",submit:"জমা",home:"হোম",reports:"রিপোর্ট",ai:"AI",newCase:"নতুন পরামর্শ",myRep:"রিপোর্ট",aiAsst:"আয়ুষ মিত্র",upload:"আপলোড",clinic:"ক্লিনিক",medRem:"ঔষধ",family:"পরিবার",whatProb:"সমস্যা?",speakSel:"বলুন",search:"খুঁজুন",where:"কোথায়?",dur:"কখন?",sev:"কতটা?",mild:"মৃদু",mod:"মধ্যম",severe:"গুরুতর",desc:"বর্ণনা",worse:"কখন বাড়ে?",better:"কখন আরাম?",otherSym:"অন্য?",cond:"পুরানো রোগ?",allergy:"অ্যালার্জি?",meds:"ঔষধ?",famHist:"পারিবারিক?",appetite:"ক্ষুধা",digestion:"হজম",sleep:"ঘুম",stress:"চাপ",exercise:"ব্যায়াম",habits:"অভ্যাস",extra:"আর কিছু?",review:"পর্যালোচনা",confirm:"সঠিক",done:"প্রস্তুত!",dl:"PDF",share:"WhatsApp",goHome:"হোম",typeMsg:"লিখুন",listen:"শুনুন",sos:"108",docLogin:"ডাক্তার লগইন",email:"ইমেইল",pass:"পাসওয়ার্ড",login:"লগইন",searchP:"রোগী খুঁজুন",pDetails:"তথ্য",noRep:"নেই",logout:"লগআউট",hi:"নমস্কার",none:"কিছু না",good:"ভালো",normal:"স্বাভাবিক",low:"কম",high:"বেশি",daily:"প্রতিদিন",sometimes:"মাঝেমধ্যে",never:"কখনো না",saved:"সংরক্ষিত",reg:"নিবন্ধিত",selectOne:"একটি",d1:"১-৩ দিন",d2:"১ সপ্তাহ",d3:"১ মাস",d4:"৩ মাস",d5:"৬+ মাস",d6:"বছর"},
+ta:{app:"ஆயுஷ்கேர்",tag:"கிளினிக்கல்",welcome:"வரவேற்பு",newP:"புதிய நோயாளி",oldP:"பழைய நோயாளி",doctor:"மருத்துவர்",emergency:"அவசரம்",name:"பெயர்",age:"வயது",gender:"பாலினம்",male:"ஆண்",female:"பெண்",other:"மற்றவை",phone:"மொபைல்",address:"ஊர்",cont:"தொடர்",back:"பின்",next:"அடுத்து",submit:"சமர்ப்பி",home:"முகப்பு",reports:"அறிக்கை",ai:"AI",newCase:"புதிய",myRep:"அறிக்கை",aiAsst:"ஆயுஷ் மித்ரா",upload:"பதிவேற்று",clinic:"கிளினிக்",medRem:"மருந்து",family:"குடும்பம்",whatProb:"பிரச்சனை?",speakSel:"பேசு",search:"தேடு",where:"எங்கே?",dur:"எப்போது?",sev:"கடுமை?",mild:"லேசான",mod:"மிதமான",severe:"கடுமையான",desc:"விவரி",worse:"எப்போது?",better:"நிவாரணம்?",otherSym:"பிற?",cond:"பழைய?",allergy:"ஒவ்வாமை?",meds:"மருந்து?",famHist:"குடும்ப?",appetite:"பசி",digestion:"செரிமானம்",sleep:"தூக்கம்",stress:"மன அழுத்தம்",exercise:"உடற்பயிற்சி",habits:"பழக்கம்",extra:"வேறு?",review:"சரிபார்",confirm:"சரி",done:"தயார்!",dl:"PDF",share:"WhatsApp",goHome:"முகப்பு",typeMsg:"தட்டச்சு",listen:"கேள்",sos:"108",docLogin:"நுழைவு",email:"மின்னஞ்சல்",pass:"கடவுச்சொல்",login:"நுழை",searchP:"தேடு",pDetails:"விவரம்",noRep:"இல்லை",logout:"வெளியேறு",hi:"வணக்கம்",none:"இல்லை",good:"நல்லது",normal:"சாதாரண",low:"குறைவு",high:"அதிகம்",daily:"தினமும்",sometimes:"சில",never:"இல்லை",saved:"சேமிப்பு",reg:"பதிவு",selectOne:"தேர்வு",d1:"1-3 நாள்",d2:"1 வாரம்",d3:"1 மாதம்",d4:"3 மாதம்",d5:"6+ மாதம்",d6:"ஆண்டு"},
+te:{app:"ఆయుష్‌కేర్",tag:"క్లినికల్",welcome:"స్వాగతం",newP:"కొత్త",oldP:"పాత",doctor:"వైద్యుడు",emergency:"అత్యవసరం",name:"పేరు",age:"వయస్సు",gender:"లింగం",male:"పురుషుడు",female:"స్త్రీ",other:"ఇతర",phone:"మొబైల్",address:"ఊరు",cont:"కొనసాగించు",back:"వెనుక",next:"తదుపరి",submit:"సమర్పించు",home:"హోమ్",reports:"నివేదికలు",ai:"AI",newCase:"కొత్త",myRep:"నివేదికలు",aiAsst:"ఆయుష్ మిత్ర",upload:"అప్‌లోడ్",clinic:"క్లినిక్",medRem:"మందు",family:"కుటుంబం",whatProb:"సమస్య?",speakSel:"మాట్లాడు",search:"వెతుకు",where:"ఎక్కడ?",dur:"ఎప్పుడు?",sev:"తీవ్రత?",mild:"తేలిక",mod:"మధ్యస్థం",severe:"తీవ్రం",desc:"వివరించు",worse:"ఎప్పుడు?",better:"ఉపశమనం?",otherSym:"ఇతర?",cond:"పాత?",allergy:"అలెర్జీ?",meds:"మందు?",famHist:"కుటుంబ?",appetite:"ఆకలి",digestion:"జీర్ణం",sleep:"నిద్ర",stress:"ఒత్తిడి",exercise:"వ్యాయామం",habits:"అలవాట్లు",extra:"మరేదైనా?",review:"సమీక్ష",confirm:"సరైనది",done:"సిద్ధం!",dl:"PDF",share:"WhatsApp",goHome:"హోమ్",typeMsg:"టైప్",listen:"వినండి",sos:"108",docLogin:"లాగిన్",email:"ఇమెయిల్",pass:"పాస్‌వర్డ్",login:"లాగిన్",searchP:"వెతుకు",pDetails:"వివరాలు",noRep:"లేవు",logout:"లాగ్అవుట్",hi:"నమస్కారం",none:"లేదు",good:"మంచిది",normal:"సాధారణ",low:"తక్కువ",high:"ఎక్కువ",daily:"రోజూ",sometimes:"కొన్నిసార్లు",never:"ఎప్పుడూ",saved:"సేవ్",reg:"నమోదు",selectOne:"ఎంచుకో",d1:"1-3 రోజులు",d2:"1 వారం",d3:"1 నెల",d4:"3 నెలలు",d5:"6+ నెలలు",d6:"సంవత్సరాలు"},
+mr:{app:"आयुष्केअर",tag:"क्लिनिकल",welcome:"स्वागत",newP:"नवीन",oldP:"जुना",doctor:"डॉक्टर",emergency:"आणीबाणी",name:"नाव",age:"वय",gender:"लिंग",male:"पुरुष",female:"स्त्री",other:"इतर",phone:"मोबाइल",address:"गाव",cont:"पुढे",back:"मागे",next:"पुढे",submit:"सबमिट",home:"होम",reports:"अहवाल",ai:"AI",newCase:"नवीन",myRep:"अहवाल",aiAsst:"आयुष मित्र",upload:"अपलोड",clinic:"क्लिनिक",medRem:"औषध",family:"कुटुंब",whatProb:"समस्या?",speakSel:"बोला",search:"शोधा",where:"कुठे?",dur:"कधी?",sev:"किती?",mild:"सौम्य",mod:"मध्यम",severe:"गंभीर",desc:"वर्णन",worse:"कधी वाढते?",better:"कधी आराम?",otherSym:"इतर?",cond:"जुना?",allergy:"ऍलर्जी?",meds:"औषधे?",famHist:"कुटुंब?",appetite:"भूक",digestion:"पचन",sleep:"झोप",stress:"ताण",exercise:"व्यायाम",habits:"सवयी",extra:"आणखी?",review:"तपासा",confirm:"बरोबर",done:"तयार!",dl:"PDF",share:"WhatsApp",goHome:"होम",typeMsg:"लिहा",listen:"ऐका",sos:"108",docLogin:"लॉगिन",email:"ईमेल",pass:"पासवर्ड",login:"लॉगिन",searchP:"शोधा",pDetails:"तपशील",noRep:"नाही",logout:"लॉगआउट",hi:"नमस्कार",none:"काही नाही",good:"चांगली",normal:"सामान्य",low:"कमी",high:"जास्त",daily:"रोज",sometimes:"कधीकधी",never:"कधीच नाही",saved:"जतन",reg:"नोंदणी",selectOne:"निवडा",d1:"1-3 दिवस",d2:"1 आठवडा",d3:"1 महिना",d4:"3 महिने",d5:"6+ महिने",d6:"वर्षे"},
+gu:{app:"આયુષ્કેર",tag:"ક્લિનિકલ",welcome:"સ્વાગત",newP:"નવો",oldP:"જૂનો",doctor:"ડૉક્ટર",emergency:"ઈમરજન્સી",name:"નામ",age:"ઉંમર",gender:"લિંગ",male:"પુરુષ",female:"સ્ત્રી",other:"અન્ય",phone:"મોબાઇલ",address:"ગામ",cont:"આગળ",back:"પાછળ",next:"આગળ",submit:"સબમિટ",home:"હોમ",reports:"રિપોર્ટ",ai:"AI",newCase:"નવી",myRep:"રિપોર્ટ",aiAsst:"આયુષ મિત્ર",upload:"અપલોડ",clinic:"ક્લિનિક",medRem:"દવા",family:"કુટુંબ",whatProb:"સમસ્યા?",speakSel:"બોલો",search:"શોધો",where:"ક્યાં?",dur:"ક્યારે?",sev:"કેટલી?",mild:"હળવી",mod:"મધ્યમ",severe:"ગંભીર",desc:"વર્ણન",worse:"ક્યારે વધે?",better:"ક્યારે રાહત?",otherSym:"અન્ય?",cond:"જૂનો?",allergy:"એલર્જી?",meds:"દવાઓ?",famHist:"કુટુંબ?",appetite:"ભૂખ",digestion:"પાચન",sleep:"ઊંઘ",stress:"તણાવ",exercise:"કસરત",habits:"આદતો",extra:"બીજું?",review:"તપાસો",confirm:"સાચી",done:"તૈયાર!",dl:"PDF",share:"WhatsApp",goHome:"હોમ",typeMsg:"લખો",listen:"સાંભળો",sos:"108",docLogin:"લોગિન",email:"ઈમેલ",pass:"પાસવર્ડ",login:"લોગિન",searchP:"શોધો",pDetails:"વિગત",noRep:"નથી",logout:"લોગઆઉટ",hi:"નમસ્તે",none:"કંઈ નહીં",good:"સારી",normal:"સામાન્ય",low:"ઓછી",high:"વધુ",daily:"રોજ",sometimes:"ક્યારેક",never:"ક્યારેય",saved:"સાચવ્યું",reg:"નોંધણી",selectOne:"પસંદ",d1:"1-3 દિવસ",d2:"1 અઠવાડિયું",d3:"1 મહિનો",d4:"3 મહિના",d5:"6+ મહિના",d6:"વર્ષો"},
+ur:{app:"آیوش کیئر",tag:"کلینیکل",welcome:"خوش آمدید",newP:"نیا",oldP:"پرانا",doctor:"ڈاکٹر",emergency:"ہنگامی",name:"نام",age:"عمر",gender:"جنس",male:"مرد",female:"عورت",other:"دیگر",phone:"موبائل",address:"گاؤں",cont:"آگے",back:"واپس",next:"اگلا",submit:"جمع",home:"ہوم",reports:"رپورٹس",ai:"AI",newCase:"نیا",myRep:"رپورٹس",aiAsst:"آیوش متر",upload:"اپ لوڈ",clinic:"کلینک",medRem:"دوا",family:"خاندان",whatProb:"مسئلہ؟",speakSel:"بولیں",search:"تلاش",where:"کہاں؟",dur:"کب سے؟",sev:"کتنا؟",mild:"ہلکا",mod:"درمیانہ",severe:"شدید",desc:"وضاحت",worse:"کب بڑھتا؟",better:"کب آرام؟",otherSym:"دیگر؟",cond:"پرانی؟",allergy:"الرجی؟",meds:"دوائیں؟",famHist:"خاندانی؟",appetite:"بھوک",digestion:"ہاضمہ",sleep:"نیند",stress:"تناؤ",exercise:"ورزش",habits:"عادات",extra:"کچھ اور؟",review:"جائزہ",confirm:"درست",done:"تیار!",dl:"PDF",share:"WhatsApp",goHome:"ہوم",typeMsg:"لکھیں",listen:"سنیں",sos:"108",docLogin:"لاگ ان",email:"ای میل",pass:"پاس ورڈ",login:"لاگ ان",searchP:"تلاش",pDetails:"تفصیل",noRep:"کوئی نہیں",logout:"لاگ آؤٹ",hi:"السلام علیکم",none:"کوئی نہیں",good:"اچھی",normal:"عام",low:"کم",high:"زیادہ",daily:"روزانہ",sometimes:"کبھی",never:"کبھی نہیں",saved:"محفوظ",reg:"رجسٹرڈ",selectOne:"منتخب",d1:"1-3 دن",d2:"1 ہفتہ",d3:"1 مہینہ",d4:"3 مہینے",d5:"6+ مہینے",d6:"سال"}
+};
+
+/* ═══════════ 90+ SYMPTOMS ═══════════ */
+const CATS=[
+{k:'all',i:'',en:'All',hi:'सभी'},{k:'pain',i:'',en:'Pain',hi:'दर्द'},
+{k:'dig',i:'',en:'Digestive',hi:'पाचन'},{k:'resp',i:'',en:'Cold-Cough',hi:'सर्दी-खांसी'},
+{k:'skin',i:'',en:'Skin-Hair',hi:'त्वचा'},{k:'mind',i:'',en:'Mental',hi:'मानसिक'},
+{k:'women',i:'',en:'Women',hi:'महिला'},{k:'chronic',i:'',en:'Long-term',hi:'पुरानी'},
+{k:'child',i:'',en:'Child',hi:'बच्चे'},{k:'ent',i:'',en:'ENT',hi:'आँख-कान-दांत'},
+{k:'uro',i:'',en:'Urinary',hi:'मूत्र'},{k:'other',i:'',en:'Other',hi:'अन्य'}
+];
+
+const SYM=[
+{c:'pain',i:'',en:'Joint Pain',hi:'जोड़ों का दर्द'},{c:'pain',i:'',en:'Back Pain',hi:'कमर दर्द'},
+{c:'pain',i:'',en:'Knee Pain',hi:'घुटने का दर्द'},{c:'pain',i:'',en:'Neck Pain',hi:'गर्दन दर्द'},
+{c:'pain',i:'',en:'Headache',hi:'सिरदर्द'},{c:'pain',i:'',en:'Migraine',hi:'माइग्रेन'},
+{c:'pain',i:'',en:'Chest Pain',hi:'सीने में दर्द',red:1},{c:'pain',i:'',en:'Stomach Pain',hi:'पेट दर्द'},
+{c:'pain',i:'',en:'Body Ache',hi:'बदन दर्द'},{c:'pain',i:'',en:'Heel Pain',hi:'एड़ी दर्द'},
+{c:'pain',i:'',en:'Shoulder Pain',hi:'कंधे का दर्द'},{c:'pain',i:'',en:'Sciatica',hi:'साइटिका'},
+{c:'dig',i:'',en:'Acidity',hi:'अम्लता'},{c:'dig',i:'',en:'Gas',hi:'गैस'},
+{c:'dig',i:'',en:'Constipation',hi:'कब्ज'},{c:'dig',i:'',en:'Loose Motion',hi:'दस्त'},
+{c:'dig',i:'',en:'Vomiting',hi:'उल्टी'},{c:'dig',i:'',en:'Nausea',hi:'जी मिचलाना'},
+{c:'dig',i:'',en:'Loss of Appetite',hi:'भूख न लगना'},{c:'dig',i:'',en:'Piles',hi:'बवासीर'},
+{c:'dig',i:'',en:'Indigestion',hi:'अपच'},{c:'dig',i:'',en:'Jaundice',hi:'पीलिया'},
+{c:'resp',i:'',en:'Fever',hi:'बुखार'},{c:'resp',i:'',en:'Cough',hi:'खांसी'},
+{c:'resp',i:'',en:'Cold',hi:'सर्दी'},{c:'resp',i:'',en:'Sore Throat',hi:'गले में खराश'},
+{c:'resp',i:'',en:'Breathlessness',hi:'सांस फूलना',red:1},{c:'resp',i:'',en:'Asthma',hi:'दमा'},
+{c:'resp',i:'',en:'Sinus',hi:'साइनस'},{c:'resp',i:'',en:'Tonsils',hi:'टॉन्सिल'},
+{c:'resp',i:'',en:'Blood in Cough',hi:'खांसी में खून',red:1},
+{c:'skin',i:'',en:'Skin Rash',hi:'त्वचा चकत्ते'},{c:'skin',i:'',en:'Itching',hi:'खुजली'},
+{c:'skin',i:'',en:'Acne',hi:'मुंहासे'},{c:'skin',i:'',en:'Eczema',hi:'एक्जिमा'},
+{c:'skin',i:'',en:'Psoriasis',hi:'सोरायसिस'},{c:'skin',i:'',en:'Hair Fall',hi:'बाल झड़ना'},
+{c:'skin',i:'',en:'Dandruff',hi:'रूसी'},{c:'skin',i:'',en:'Fungal',hi:'फंगल'},
+{c:'skin',i:'',en:'White Patches',hi:'सफेद दाग'},{c:'skin',i:'',en:'Wound',hi:'घाव'},
+{c:'mind',i:'',en:'Stress',hi:'तनाव'},{c:'mind',i:'',en:'Anxiety',hi:'चिंता'},
+{c:'mind',i:'',en:'Depression',hi:'अवसाद'},{c:'mind',i:'',en:'Insomnia',hi:'नींद न आना'},
+{c:'mind',i:'',en:'Dizziness',hi:'चक्कर'},{c:'mind',i:'',en:'Memory Loss',hi:'याददाश्त'},
+{c:'mind',i:'',en:'Fatigue',hi:'थकान'},{c:'mind',i:'',en:'Anger',hi:'गुस्सा'},
+{c:'women',i:'',en:'Irregular Periods',hi:'अनियमित मासिक'},{c:'women',i:'',en:'Painful Periods',hi:'मासिक दर्द'},
+{c:'women',i:'',en:'White Discharge',hi:'श्वेत प्रदर'},{c:'women',i:'',en:'PCOD',hi:'पीसीओडी'},
+{c:'women',i:'',en:'Menopause',hi:'रजोनिवृत्ति'},{c:'women',i:'',en:'Pregnancy',hi:'गर्भावस्था'},
+{c:'women',i:'',en:'Breastfeeding',hi:'स्तनपान'},{c:'women',i:'',en:'Infertility',hi:'बांझपन'},
+{c:'chronic',i:'',en:'Diabetes',hi:'मधुमेह'},{c:'chronic',i:'',en:'High BP',hi:'उच्च रक्तचाप'},
+{c:'chronic',i:'',en:'Thyroid',hi:'थायरॉयड'},{c:'chronic',i:'',en:'Obesity',hi:'मोटापा'},
+{c:'chronic',i:'',en:'Cholesterol',hi:'कोलेस्ट्रॉल'},{c:'chronic',i:'',en:'Arthritis',hi:'गठिया'},
+{c:'chronic',i:'',en:'Kidney Stone',hi:'पथरी'},{c:'chronic',i:'',en:'Liver',hi:'लिवर'},
+{c:'chronic',i:'',en:'Anemia',hi:'खून की कमी'},
+{c:'child',i:'',en:'Child Fever',hi:'बच्चे को बुखार'},{c:'child',i:'',en:'Poor Feeding',hi:'दूध न पीना'},
+{c:'child',i:'',en:'Low Weight',hi:'वजन कम'},{c:'child',i:'',en:'Crying',hi:'ज्यादा रोना'},
+{c:'child',i:'',en:'Child Diarrhea',hi:'दस्त'},{c:'child',i:'',en:'Teething',hi:'दांत'},
+{c:'ent',i:'',en:'Eye Problem',hi:'आँख'},{c:'ent',i:'',en:'Ear Pain',hi:'कान दर्द'},
+{c:'ent',i:'',en:'Hearing Loss',hi:'सुनाई कम'},{c:'ent',i:'',en:'Toothache',hi:'दांत दर्द'},
+{c:'ent',i:'',en:'Gum Bleeding',hi:'मसूड़े'},{c:'ent',i:'',en:'Mouth Ulcer',hi:'छाले'},
+{c:'uro',i:'',en:'Burning Urination',hi:'पेशाब जलन'},{c:'uro',i:'',en:'Frequent Urination',hi:'बार-बार पेशाब'},
+{c:'uro',i:'',en:'Blood in Urine',hi:'पेशाब में खून',red:1},{c:'uro',i:'',en:'Urine Retention',hi:'पेशाब रुकना'},
+{c:'other',i:'',en:'Injury',hi:'चोट'},{c:'other',i:'',en:'Insect Bite',hi:'काटना'},
+{c:'other',i:'',en:'Fainting',hi:'बेहोशी',red:1},{c:'other',i:'',en:'Severe Bleeding',hi:'खून',red:1},
+{c:'other',i:'',en:'Addiction',hi:'नशा'},{c:'other',i:'',en:'Snoring',hi:'खर्राटे'},
+{c:'other',i:'',en:'Other',hi:'अन्य'}
+];
+
+const BODY=[
+{en:'Head',hi:'सिर'},{en:'Eyes',hi:'आँखें'},{en:'Ear',hi:'कान'},
+{en:'Throat',hi:'गला'},{en:'Chest',hi:'छाती'},{en:'Stomach',hi:'पेट'},
+{en:'Back',hi:'पीठ'},{en:'Waist',hi:'कमर'},{en:'Hands',hi:'हाथ'},
+{en:'Legs',hi:'पैर'},{en:'Knee',hi:'घुटना'},{en:'Skin',hi:'त्वचा'},
+{en:'Whole Body',hi:'पूरा शरीर'},{en:'Private',hi:'गुप्तांग'},{en:'Not Sure',hi:'पता नहीं'}
+];
+
+/* ═══════════ STATE ═══════════ */
+const LC={en:'en-IN',hi:'hi-IN',bn:'bn-IN',ta:'ta-IN',te:'te-IN',mr:'mr-IN',gu:'gu-IN',ur:'ur-PK'};
+let lang=localStorage.getItem('ac_lang')||'hi';
+let me=JSON.parse(localStorage.getItem('ac_me')||'null');
+let F={};let lastReport=null;let activeCat='all';let symQuery='';let docFilter='pending';
+
+/* ═══════════ HELPERS ═══════════ */
+function t(k){return (T[lang]&&T[lang][k])||T.en[k]||k;}
+function sname(s){return lang==='hi'?s.hi:(s[lang]||s.en);}
+function bname(b){return lang==='hi'?b.hi:(b[lang]||b.en);}
+function cname(c){return lang==='hi'?c.hi:(c[lang]||c.en);}
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function normPhone(p){return String(p||'').replace(/\D/g,'');}
+function toast(msg,type){
+  const c=document.getElementById('toasts');const d=document.createElement('div');
+  d.className='toast '+(type||'');d.innerHTML=msg;c.appendChild(d);
+  setTimeout(()=>{d.style.opacity='0';d.style.transform='translateY(-14px)';setTimeout(()=>d.remove(),300);},3500);
+}
+function load(on){document.getElementById('loader').style.display=on?'flex':'none';}
+function go(fn){window.scrollTo(0,0);fn(document.getElementById('app'));}
+function pick(btn,key,val){[...btn.parentElement.children].forEach(b=>b.classList.remove('on'));btn.classList.add('on');F[key]=val;}
+function multi(btn,key){btn.classList.toggle('on');F[key]=[...btn.parentElement.querySelectorAll('.opt.on')].map(x=>x.textContent.trim()).join(', ')||t('none');}
+
+/* ═══════════ VOICE ═══════════ */
+let recog=null;
+async function mic(inputId,btn){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){toast(' Use Chrome browser','err');return;}
+  if(location.protocol==='file:'){toast(' Upload to Netlify for mic','warn');return;}
+  try{if(navigator.mediaDevices){const s=await navigator.mediaDevices.getUserMedia({audio:true});s.getTracks().forEach(x=>x.stop());}}
+  catch(e){toast(' Allow mic access','err');return;}
+  if(recog){try{recog.stop();}catch(e){}}
+  recog=new SR();recog.lang=LC[lang]||'en-IN';recog.interimResults=false;recog.continuous=false;
+  btn.classList.add('on');btn.textContent='';
+  const reset=()=>{btn.classList.remove('on');btn.textContent='';};
+  recog.onresult=e=>{const txt=e.results[0][0].transcript;const el=document.getElementById(inputId);if(el){el.value=(el.value?el.value+' ':'')+txt;}toast(' '+txt,'ok');};
+  recog.onerror=e=>{reset();if(e.error!=='aborted')toast('Voice error: '+e.error,'err');};
+  recog.onend=reset;
+  try{recog.start();}catch(err){reset();toast('Mic busy','err');}
+}
+function speak(txt){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(txt);u.lang=LC[lang]||'en-IN';u.rate=.92;speechSynthesis.speak(u);}catch(e){}}
+function micBtn(id){return `<button class="mic" onclick="mic('${id}',this)"></button>`;}
+
+/* ═══════════ SAFE FETCH (60s for Render cold start) ═══════════ */
+async function safeFetch(url,options,timeoutMs){
+  timeoutMs=timeoutMs||60000;
+  if(!API_URL)return null;
+  try{
+    const ctrl=new AbortController();
+    const timer=setTimeout(()=>ctrl.abort(),timeoutMs);
+    const res=await fetch(url,Object.assign({},options||{},{signal:ctrl.signal}));
+    clearTimeout(timer);
+    const data=await res.json().catch(()=>null);
+    if(!res.ok)return null;
+    return data;
+  }catch(e){console.log('Fetch failed:',e.message);return null;}
+}
+
+/* ═══════════ LOCAL STORAGE HELPERS ═══════════ */
+function getInbox(){return JSON.parse(localStorage.getItem('ac_inbox')||'[]');}
+function setInbox(arr){localStorage.setItem('ac_inbox',JSON.stringify(arr));}
+function upsertLocalReport(updated){
+  let inbox=getInbox();
+  const i=inbox.findIndex(r=>r.reportId===updated.reportId);
+  if(i>=0)inbox[i]={...inbox[i],...updated};
+  else inbox.unshift(updated);
+  setInbox(inbox);
+  const phone=normPhone(updated.patientPhone);
+  if(!phone)return;
+  const key='ac_rep_'+phone;
+  let arr=JSON.parse(localStorage.getItem(key)||'[]');
+  const j=arr.findIndex(r=>r.reportId===updated.reportId);
+  if(j>=0)arr[j]={...arr[j],...updated};
+  else arr.unshift(updated);
+  localStorage.setItem(key,JSON.stringify(arr));
+}
+
+/* ═══════════ LANGUAGE ═══════════ */
+function PageLang(a){
+  const L=[{c:'hi',f:'अ',n:'हिन्दी'},{c:'en',f:'A',n:'English'},{c:'bn',f:'অ',n:'বাংলা'},{c:'ta',f:'அ',n:'தமிழ்'},{c:'te',f:'అ',n:'తెలుగు'},{c:'mr',f:'म',n:'मराठी'},{c:'gu',f:'અ',n:'ગુજરાતી'},{c:'ur',f:'ا',n:'اردو'}];
+  a.innerHTML=`<div class="center">
+    <div style="font-size:80px;margin-bottom:8px"></div>
+    <div class="t-3xl bold green">AyushCare</div>
+    <div class="muted mb24 tc mt8">Select your language<br>अपनी भाषा चुनें</div>
+    <div class="lang-grid">${L.map(l=>`<button class="lang-card" onclick="setLang('${l.c}')"><span class="fl">${l.f}</span><span class="nm">${l.n}</span></button>`).join('')}</div>
+    <div class="t-xs muted mt24 tc">Ministry of AYUSH • SIH26047</div>
+  </div>`;
+}
+function setLang(l){lang=l;localStorage.setItem('ac_lang',l);go(PageWelcome);}
+
+/* ═══════════ WELCOME ═══════════ */
+function PageWelcome(a){
+  a.innerHTML=`<div class="hdr">
+    <button class="hdr-btn" onclick="go(PageLang)"> ${lang.toUpperCase()}</button>
+    <h1> ${t('app')}</h1>
+    <button class="hdr-btn dark" onclick="go(PageDocLogin)"></button></div>
+  <div class="wrap" style="padding-top:32px">
+    <div class="tc mb24">
+      <div style="font-size:82px"></div>
+      <div class="t-2xl bold green">${t('app')}</div>
+      <div class="muted t-sm mt8">${t('tag')}</div>
+    </div>
+    <button class="btn mb12" onclick="go(PageReg)"> ${t('newP')}</button>
+    <button class="btn btn-o mb12" onclick="go(PageLogin)"> ${t('oldP')}</button>
+    <button class="btn btn-red mt16" onclick="go(PageSOS)"> ${t('emergency')} -- 108</button>
+  </div>`;
+}
+
+/* ═══════════ REGISTER ═══════════ */
+function PageReg(a){
+  a.innerHTML=`<div class="hdr">
+    <button class="hdr-btn" onclick="go(PageWelcome)">← ${t('back')}</button>
+    <h1>${t('newP')}</h1>
+    <button class="hdr-btn" onclick="go(PageLang)"></button></div>
+  <div class="wrap"><div class="card">
+    <label class="lbl">${t('name')} *</label>
+    <div class="inp-row mb16"><input id="rn" class="inp" placeholder="Name">${micBtn('rn')}</div>
+    <label class="lbl">${t('age')}</label>
+    <div class="inp-row mb16"><input id="ra" class="inp" type="number" placeholder="42">${micBtn('ra')}</div>
+    <label class="lbl">${t('gender')}</label>
+    <div class="opts c3 mb16">
+      <button class="opt" onclick="pick(this,'gender','${t('male')}')"> ${t('male')}</button>
+      <button class="opt" onclick="pick(this,'gender','${t('female')}')"> ${t('female')}</button>
+      <button class="opt" onclick="pick(this,'gender','${t('other')}')"> ${t('other')}</button>
+    </div>
+    <label class="lbl">${t('phone')} *</label>
+    <div class="inp-row mb16"><input id="rp" class="inp" type="tel" maxlength="10" placeholder="9876543210">${micBtn('rp')}</div>
+    <label class="lbl">${t('address')}</label>
+    <div class="inp-row mb16"><input id="rad" class="inp" placeholder="City">${micBtn('rad')}</div>
+    <button class="btn" onclick="doReg()">${t('cont')} →</button>
+  </div></div>`;
+}
+async function doReg(){
+  const name=(document.getElementById('rn').value||'').trim();
+  const phone=normPhone(document.getElementById('rp').value);
+  if(!name){toast(' '+t('name'),'err');return;}
+  if(phone.length!==10){toast(' 10-digit '+t('phone'),'err');return;}
+  const p={name,age:parseInt(document.getElementById('ra').value)||0,gender:F.gender||'Other',phone,address:(document.getElementById('rad').value||'').trim(),language:lang};
+  me=p;localStorage.setItem('ac_me',JSON.stringify(p));
+  toast(' '+t('reg'),'ok');
+  safeFetch(API_URL+'/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(p)},60000);
+  go(PageHome);
+}
+
+/* ═══════════ LOGIN ═══════════ */
+function PageLogin(a){
+  a.innerHTML=`<div class="hdr">
+    <button class="hdr-btn" onclick="go(PageWelcome)">← ${t('back')}</button>
+    <h1>${t('oldP')}</h1>
+    <button class="hdr-btn" onclick="go(PageLang)"></button></div>
+  <div class="wrap"><div class="card">
+    <div class="tc mb16"><div style="font-size:60px"></div></div>
+    <label class="lbl">${t('phone')}</label>
+    <div class="inp-row mb16"><input id="lp" class="inp" type="tel" maxlength="10" placeholder="9876543210">${micBtn('lp')}</div>
+    <button class="btn" onclick="doLogin()">${t('cont')} →</button>
+  </div></div>`;
+}
+async function doLogin(){
+  const ph=normPhone(document.getElementById('lp').value);
+  if(ph.length!==10){toast(' 10-digit','err');return;}
+  const local=JSON.parse(localStorage.getItem('ac_me')||'null');
+  if(local&&local.phone===ph){me=local;toast(' '+t('hi')+' '+local.name,'ok');go(PageHome);return;}
+  load(1);
+  const d=await safeFetch(API_URL+'/api/search?phone='+ph,{},60000);
+  load(0);
+  if(d&&d.patient){me=d.patient;localStorage.setItem('ac_me',JSON.stringify(d.patient));go(PageHome);}
+  else toast(' Not found. Register first.','err');
+}
+
+/* ═══════════ HOME ═══════════ */
+function PageHome(a){
+  if(!me){go(PageWelcome);return;}
+  const reps=JSON.parse(localStorage.getItem('ac_rep_'+me.phone)||'[]');
+  a.innerHTML=`<div class="hdr">
+    <button class="hdr-btn" onclick="doLogout()">↩ ${t('logout')}</button>
+    <h1> ${t('app')}</h1>
+    <button class="hdr-btn" onclick="go(PageLang)"></button></div>
+  <div class="wrap">
+    <div class="card-hero mb16">
+      <div class="t-sm" style="opacity:.9;position:relative;z-index:2">${t('hi')} </div>
+      <div class="t-xl bold" style="position:relative;z-index:2">${esc(me.name)}</div>
+      <div class="t-sm mt8" style="opacity:.9;position:relative;z-index:2"> ${esc(me.phone)}${me.age?' • '+esc(me.age)+'y':''}${me.gender?' • '+esc(me.gender):''}</div>
+    </div>
+    <button class="btn mb16" style="padding:22px;font-size:19px" onclick="startCase()"> ${t('newCase')}</button>
+    <div class="tiles mb16">
+      <button class="tile" onclick="go(PageReports)"><span class="ic"></span><span class="tx">${t('myRep')}</span>${reps.length?`<span class="badge">${reps.length}</span>`:''}</button>
+      <button class="tile" onclick="go(PageAI)"><span class="ic"></span><span class="tx">${t('aiAsst')}</span></button>
+      <button class="tile" onclick="go(PageUpload)"><span class="ic"></span><span class="tx">${t('upload')}</span></button>
+      <button class="tile" onclick="findClinic()"><span class="ic"></span><span class="tx">${t('clinic')}</span></button>
+      <button class="tile" onclick="go(PageMeds)"><span class="ic"></span><span class="tx">${t('medRem')}</span></button>
+      <button class="tile" onclick="go(PageFamily)"><span class="ic"></span><span class="tx">${t('family')}</span></button>
+    </div>
+    <button class="btn btn-red" onclick="go(PageSOS)"> ${t('emergency')} SOS</button>
+  </div>${nav('home')}`;
+}
+function nav(active){
+  return `<div class="bnav">
+    <button class="${active==='home'?'on':''}" onclick="go(PageHome)"><span class="bi"></span>${t('home')}</button>
+    <button class="${active==='rep'?'on':''}" onclick="go(PageReports)"><span class="bi"></span>${t('reports')}</button>
+    <button onclick="startCase()"><span class="bi" style="font-size:34px;color:#047857">⊕</span></button>
+    <button class="${active==='ai'?'on':''}" onclick="go(PageAI)"><span class="bi"></span>${t('ai')}</button>
+    <button class="${active==='sos'?'on':''}" onclick="go(PageSOS)"><span class="bi"></span>SOS</button>
+  </div>`;
+}
+function doLogout(){localStorage.removeItem('ac_me');me=null;go(PageWelcome);}
+function findClinic(){window.open('https://www.google.com/maps/search/ayush+ayurvedic+clinic+near+me','_blank');}
+function startCase(){if(!me){go(PageWelcome);return;}F={};activeCat='all';symQuery='';go(Step1);}
+
+function prog(n,total){
+  let s='';for(let i=1;i<=total;i++)s+=`<div class="step ${i<n?'done':i===n?'now':''}">${i<n?'':i}</div>`;
+  return `<div class="prog-wrap"><div class="between"><span class="t-sm semi green">Step ${n} / ${total}</span><span class="t-xs muted">${Math.round(n/total*100)}%</span></div><div class="prog-bar"><div class="prog-fill" style="width:${n/total*100}%"></div></div><div class="steps">${s}</div></div>`;
+}
+
+/* ═══════════ CONSULTATION ═══════════ */
+function Step1(a){
+  a.innerHTML=`<div class="hdr"><button class="hdr-btn" onclick="go(PageHome)">←</button><h1>${t('whatProb')}</h1><button class="hdr-btn" onclick="speak('${t('whatProb')}')"></button></div>
+  <div class="wrap">${prog(1,6)}
+    <div class="card">
+      <div class="t-lg bold green mb8">${t('whatProb')}</div>
+      <div class="t-sm muted mb12">${t('speakSel')}</div>
+      <div class="inp-row mb12"><input id="s1" class="inp" placeholder="${t('search')}" oninput="symQuery=this.value.toLowerCase();drawSyms()">${micBtn('s1')}</div>
+      <div class="cats" id="cats"></div>
+      <div class="sym-grid" id="symg"></div>
+      <div id="redwarn" class="mt12"></div>
+      <button class="btn mt16" onclick="next1()">${t('next')} →</button>
+    </div></div>`;
+  drawCats();drawSyms();
+}
+function drawCats(){document.getElementById('cats').innerHTML=CATS.map(c=>`<button class="chip ${activeCat===c.k?'on':''}" onclick="activeCat='${c.k}';drawCats();drawSyms()">${c.i} ${cname(c)}</button>`).join('');}
+function drawSyms(){
+  let list=SYM.filter(s=>activeCat==='all'||s.c===activeCat);
+  if(symQuery)list=SYM.filter(s=>(s.en+s.hi).toLowerCase().includes(symQuery));
+  const sel=F.symptoms||[];
+  document.getElementById('symg').innerHTML=list.map(s=>{const n=sname(s);const on=sel.includes(n)?'on':'';
+    return `<button class="sym ${on}" onclick="toggleSym('${n.replace(/'/g,"\\'")}',${s.red?1:0})">${s.red?'<span class="flag"></span>':''}<span class="ic">${s.i}</span><span class="nm">${n}</span></button>`;
+  }).join('')||`<div class="muted tc" style="grid-column:1/-1;padding:20px"> No match</div>`;
+}
+function toggleSym(n,red){
+  F.symptoms=F.symptoms||[];
+  const i=F.symptoms.indexOf(n);
+  if(i>-1)F.symptoms.splice(i,1);else F.symptoms.push(n);
+  if(red&&i===-1){F.redFlag=true;document.getElementById('redwarn').innerHTML=`<div class="alert alert-red"> <div><b>Serious symptom!</b> Call 108<br><a href="tel:108" class="btn btn-red btn-sm mt8" style="display:inline-flex"> 108</a></div></div>`;}
+  drawSyms();
+}
+function next1(){
+  const typed=(document.getElementById('s1').value||'').trim();
+  F.symptoms=F.symptoms||[];
+  if(typed&&!F.symptoms.includes(typed))F.symptoms.push(typed);
+  if(!F.symptoms.length){toast(' '+t('selectOne'),'warn');return;}
+  F.mainComplaint=F.symptoms.join(', ');go(Step2);
+}
+function Step2(a){
+  const D=['d1','d2','d3','d4','d5','d6'];
+  a.innerHTML=`<div class="hdr"><button class="hdr-btn" onclick="go(Step1)">←</button><h1>${t('where')}</h1><span style="width:40px"></span></div>
+  <div class="wrap">${prog(2,6)}
+    <div class="card"><div class="t-lg bold green mb12"> ${t('where')}</div>
+      <div class="bodymap">${BODY.map(b=>`<button class="bp" onclick="pickBody(this)">${bname(b)}</button>`).join('')}</div></div>
+    <div class="card"><div class="t-lg bold green mb12"> ${t('dur')}</div>
+      <div class="opts c2">${D.map(d=>`<button class="opt" onclick="pick(this,'duration','${t(d)}')">${t(d)}</button>`).join('')}</div></div>
+    <div class="card"><div class="t-lg bold green mb12"> ${t('sev')}</div>
+      <div class="opts c3">
+        <button class="opt" onclick="pickSev(this,'${t('mild')}','')"> ${t('mild')}</button>
+        <button class="opt" onclick="pickSev(this,'${t('mod')}','sev-m')"> ${t('mod')}</button>
+        <button class="opt" onclick="pickSev(this,'${t('severe')}','sev-h')"> ${t('severe')}</button>
+      </div></div>
+    <div class="card"><div class="t-lg bold green mb12"> ${t('desc')}</div>
+      <div class="inp-row"><textarea id="d2" class="inp" placeholder="..."></textarea>${micBtn('d2')}</div></div>
+    <button class="btn" onclick="next2()">${t('next')} →</button></div>`;
+}
+function pickBody(btn){btn.classList.toggle('on');F.bodyParts=[...document.querySelectorAll('.bp.on')].map(x=>x.textContent.trim());}
+function pickSev(btn,v,cls){[...btn.parentElement.children].forEach(b=>{b.classList.remove('on','sev-m','sev-h');});btn.classList.add('on');if(cls)btn.classList.add(cls);F.severity=v;}
+function next2(){
+  if(!F.duration){toast(' '+t('dur'),'warn');return;}
+  if(!F.severity){toast(' '+t('sev'),'warn');return;}
+  F.problemDetails=(document.getElementById('d2').value||'').trim();
+  F.location=(F.bodyParts||[]).join(', ')||'-';go(Step3);
+}
+function Step3(a){
+  const W=lang==='hi'?['सुबह','रात','ठंड','गर्मी','चलने पर','बैठने पर','खाने के बाद','तनाव','मसालेदार','पता नहीं']:['Morning','Night','Cold','Heat','Walking','Sitting','After food','Stress','Spicy','Unknown'];
+  const B=lang==='hi'?['आराम','नींद','गर्म सिकाई','ठंडी सिकाई','चलने','खाने','दवा','कुछ नहीं']:['Rest','Sleep','Warm','Cold','Walking','Eating','Medicine','Nothing'];
+  const O=lang==='hi'?['बुखार','कमजोरी','उल्टी','चक्कर','भूख कम','वजन घटना','सूजन','कुछ नहीं']:['Fever','Weakness','Vomiting','Dizziness','Low appetite','Weight loss','Swelling','None'];
+  a.innerHTML=`<div class="hdr"><button class="hdr-btn" onclick="go(Step2)">←</button><h1>${t('worse')}</h1><span style="width:40px"></span></div>
+  <div class="wrap">${prog(3,6)}
+    <div class="card"><div class="t-lg bold green mb12"> ${t('worse')}</div><div class="opts c2">${W.map(x=>`<button class="opt" onclick="multi(this,'worseBy')">${x}</button>`).join('')}</div></div>
+    <div class="card"><div class="t-lg bold green mb12"> ${t('better')}</div><div class="opts c2">${B.map(x=>`<button class="opt" onclick="multi(this,'betterBy')">${x}</button>`).join('')}</div></div>
+    <div class="card"><div class="t-lg bold green mb12"> ${t('otherSym')}</div><div class="opts c2">${O.map(x=>`<button class="opt" onclick="multi(this,'otherSymptoms')">${x}</button>`).join('')}</div></div>
+    <button class="btn" onclick="go(Step4)">${t('next')} →</button></div>`;
+}
+function Step4(a){
+  const C=lang==='hi'?['मधुमेह','रक्तचाप','थायरॉयड','दमा','हृदय रोग','किडनी','लिवर','गठिया','कोई नहीं']:['Diabetes','BP','Thyroid','Asthma','Heart','Kidney','Liver','Arthritis','None'];
+  const FH=lang==='hi'?['मधुमेह','रक्तचाप','हृदय','कैंसर','दमा','कोई नहीं']:['Diabetes','BP','Heart','Cancer','Asthma','None'];
+  a.innerHTML=`<div class="hdr"><button class="hdr-btn" onclick="go(Step3)">←</button><h1>${t('cond')}</h1><span style="width:40px"></span></div>
+  <div class="wrap">${prog(4,6)}
+    <div class="card"><div class="t-lg bold green mb12"> ${t('cond')}</div><div class="opts c2">${C.map(x=>`<button class="opt" onclick="multi(this,'existingConditions')">${x}</button>`).join('')}</div></div>
+    <div class="card"><div class="t-lg bold green mb12"> ${t('allergy')}</div><div class="inp-row"><input id="h1" class="inp" placeholder="${t('none')}">${micBtn('h1')}</div></div>
+    <div class="card"><div class="t-lg bold green mb12"> ${t('meds')}</div><div class="inp-row"><input id="h2" class="inp" placeholder="${t('none')}">${micBtn('h2')}</div></div>
+    <div class="card"><div class="t-lg bold green mb12"> ${t('famHist')}</div><div class="opts c2">${FH.map(x=>`<button class="opt" onclick="multi(this,'familyHistory')">${x}</button>`).join('')}</div></div>
+    <button class="btn" onclick="next4()">${t('next')} →</button></div>`;
+}
+function next4(){F.allergies=(document.getElementById('h1').value||'').trim()||t('none');F.currentMedicines=(document.getElementById('h2').value||'').trim()||t('none');go(Step5);}
+function Step5(a){
+  const AP=[t('good'),t('normal'),t('low')];
+  const DG=lang==='hi'?['अच्छा','गैस','कब्ज','दस्त','जलन']:['Good','Gas','Constipation','Loose','Burning'];
+  const SL=['<4h','4-6h','6-8h','8h+'];
+  const ST=[t('low'),t('normal'),t('high')];
+  const EX=[t('daily'),t('sometimes'),t('never')];
+  const HB=lang==='hi'?['तंबाकू','शराब','ज्यादा चाय','धूम्रपान','कुछ नहीं']:['Tobacco','Alcohol','Excess tea','Smoking','None'];
+  a.innerHTML=`<div class="hdr"><button class="hdr-btn" onclick="go(Step4)">←</button><h1> ${t('habits')}</h1><span style="width:40px"></span></div>
+  <div class="wrap">${prog(5,6)}
+    <div class="card"><div class="t-lg bold green mb12"> ${t('appetite')}</div><div class="opts c3">${AP.map(x=>`<button class="opt" onclick="pick(this,'appetite','${x}')">${x}</button>`).join('')}</div></div>
+    <div class="card"><div class="t-lg bold green mb12"> ${t('digestion')}</div><div class="opts c3">${DG.map(x=>`<button class="opt" onclick="pick(this,'digestion','${x}')">${x}</button>`).join('')}</div></div>
+    <div class="card"><div class="t-lg bold green mb12"> ${t('sleep')}</div><div class="opts c2">${SL.map(x=>`<button class="opt" onclick="pick(this,'sleep','${x}')">${x}</button>`).join('')}</div></div>
+    <div class="card"><div class="t-lg bold green mb12"> ${t('stress')}</div><div class="opts c3">${ST.map(x=>`<button class="opt" onclick="pick(this,'stress','${x}')">${x}</button>`).join('')}</div></div>
+    <div class="card"><div class="t-lg bold green mb12"> ${t('exercise')}</div><div class="opts c3">${EX.map(x=>`<button class="opt" onclick="pick(this,'exercise','${x}')">${x}</button>`).join('')}</div></div>
+    <div class="card"><div class="t-lg bold green mb12"> ${t('habits')}</div><div class="opts c2">${HB.map(x=>`<button class="opt" onclick="multi(this,'habits')">${x}</button>`).join('')}</div></div>
+    <div class="card"><div class="t-lg bold green mb12"> ${t('extra')}</div><div class="inp-row"><textarea id="x1" class="inp" placeholder="..."></textarea>${micBtn('x1')}</div></div>
+    <button class="btn" onclick="next5()">${t('review')} →</button></div>`;
+}
+function next5(){F.extraNotes=(document.getElementById('x1').value||'').trim()||'-';go(Step6);}
+function Step6(a){
+  const R=[[t('name'),me.name],[t('age')+'/'+t('gender'),(me.age||'-')+' / '+(me.gender||'-')],[t('phone'),me.phone],
+    [' '+t('whatProb'),F.mainComplaint],[' '+t('where'),F.location],[' '+t('dur'),F.duration],
+    [' '+t('sev'),F.severity],[' '+t('desc'),F.problemDetails||'-'],
+    [' '+t('worse'),F.worseBy||'-'],[' '+t('better'),F.betterBy||'-'],
+    [' '+t('otherSym'),F.otherSymptoms||'-'],[' '+t('cond'),F.existingConditions||t('none')],
+    [' '+t('allergy'),F.allergies],[' '+t('meds'),F.currentMedicines],
+    [' '+t('famHist'),F.familyHistory||t('none')],[' '+t('appetite'),F.appetite||'-'],
+    [' '+t('digestion'),F.digestion||'-'],[' '+t('sleep'),F.sleep||'-'],
+    [' '+t('stress'),F.stress||'-'],[' '+t('exercise'),F.exercise||'-'],
+    [' '+t('habits'),F.habits||t('none')],[' '+t('extra'),F.extraNotes]];
+  a.innerHTML=`<div class="hdr"><button class="hdr-btn" onclick="go(Step5)">←</button><h1>${t('review')}</h1><span style="width:40px"></span></div>
+  <div class="wrap">${prog(6,6)}
+    ${F.redFlag?`<div class="alert alert-red mb12"> Serious symptom reported</div>`:''}
+    <div class="card">${R.map(r=>`<div class="rv"><span class="k">${r[0]}</span><span class="v">${esc(r[1])}</span></div>`).join('')}</div>
+    <label class="chk mb16" onclick="this.classList.toggle('on')"><input type="checkbox" id="cf"><span>${t('confirm')}</span></label>
+    <button class="btn" style="padding:20px" onclick="submitReport()"> ${t('submit')}</button></div>`;
+}
+async function submitReport(){
+  if(!document.getElementById('cf').checked){toast(' '+t('confirm'),'warn');return;}
+  const rep={reportId:'AYU-'+new Date().getFullYear()+'-'+String(Date.now()).slice(-6),
+    patientPhone:normPhone(me.phone),patientName:me.name,patientAge:me.age||0,patientGender:me.gender||'Other',
+    mainComplaint:F.mainComplaint,duration:F.duration,severity:F.severity,
+    problemDetails:F.problemDetails||'-',location:F.location||'-',
+    worseBy:F.worseBy||'-',betterBy:F.betterBy||'-',otherSymptoms:F.otherSymptoms||'-',
+    existingConditions:F.existingConditions||t('none'),allergies:F.allergies||t('none'),
+    currentMedicines:F.currentMedicines||t('none'),familyHistory:F.familyHistory||t('none'),
+    appetite:F.appetite||'-',digestion:F.digestion||'-',sleep:F.sleep||'-',
+    stress:F.stress||'-',exercise:F.exercise||'-',habits:F.habits||t('none'),
+    extraNotes:F.extraNotes||'-',redFlag:F.redFlag?'YES':'NO',
+    status:'pending',doctorNotes:'',doctorPrescription:'',reviewedAt:null,viewCount:0,
+    createdAt:new Date().toISOString()};
+  load(1);
+  upsertLocalReport(rep);
+  const apiRes=await safeFetch(API_URL+'/api/report',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(rep)},60000);
+  load(0);
+  if(apiRes&&apiRes.success)toast(' Saved to cloud database','ok');
+  else toast(' Saved locally. Server sync pending','warn');
+  lastReport=rep;go(PageDone);
+}
+
+/* ═══════════ DONE PAGE ═══════════ */
+function PageDone(a){
+  const r=lastReport;
+  if(!r){go(PageHome);return;}
+  a.innerHTML=`<div class="hdr"><h1> ${t('done')}</h1><span style="width:40px"></span></div>
+  <div class="wrap"><div class="card tc">
+    <div style="font-size:72px"></div>
+    <div class="t-xl bold green mb8">${t('done')}</div>
+    <div class="t-sm muted mb16">Show this to your doctor</div>
+    <div id="qr" class="mb16"></div>
+    <div class="alert alert-ok mb16" style="justify-content:center"> <div><b>${r.reportId}</b><br><span class="t-xs">${new Date(r.createdAt).toLocaleString()}</span></div></div>
+    ${r.status==='reviewed'?`<div class="alert alert-blue mb16"> <div><b>Doctor Reviewed</b>${r.doctorNotes?'<br><b>Notes:</b> '+esc(r.doctorNotes):''}${r.doctorPrescription?'<br><b>Rx:</b> '+esc(r.doctorPrescription):''}</div></div>`:''}
+    <button class="btn mb12" onclick="dlPDF()"> ${t('dl')}</button>
+    <button class="btn btn-wa mb12" onclick="waShare()"> ${t('share')}</button>
+    <button class="btn btn-gray" onclick="go(currentDoctor?PageDoc:PageHome)"> ${t('goHome')}</button>
+  </div></div>`;
+  try{const q=qrcode(0,'M');q.addData(JSON.stringify({id:r.reportId,ph:r.patientPhone}));q.make();
+    document.getElementById('qr').innerHTML='<div class="qr-box">'+q.createImgTag(5,8)+'</div>';}
+  catch(e){document.getElementById('qr').innerHTML=`<div class="qr-box"><div class="t-xs muted">Report ID</div><div class="t-lg bold green">${r.reportId}</div></div>`;}
+}
+
+/* ═══════════ PDF ═══════════ */
+function dlPDF(){
+  if(!lastReport){toast(' No report','err');return;}
+  const r=lastReport;
+  try{
+    if(window.jspdf&&window.jspdf.jsPDF){
+      const {jsPDF}=window.jspdf;
+      const doc=new jsPDF('p','mm','a4');
+      const pageW=210;const margin=14;const maxW=pageW-margin*2;let y=16;
+      const ensureSpace=(need)=>{if(y+need>287){doc.addPage();y=16;}};
+      const addTitle=(text)=>{ensureSpace(12);doc.setFont('helvetica','bold');doc.setFontSize(16);doc.setTextColor(4,120,87);doc.text(String(text),margin,y);y+=8;doc.setDrawColor(4,120,87);doc.setLineWidth(0.6);doc.line(margin,y,pageW-margin,y);y+=8;doc.setTextColor(15,23,42);};
+      const addHeading=(text)=>{ensureSpace(10);doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(4,120,87);doc.text(String(text),margin,y);y+=6;doc.setDrawColor(226,232,240);doc.setLineWidth(0.3);doc.line(margin,y,pageW-margin,y);y+=5;doc.setTextColor(15,23,42);};
+      const addLine=(label,value,boldValue)=>{const labelText=String(label||'');const valueText=String(value==null||value===''?'-':value);doc.setFont('helvetica','bold');doc.setFontSize(10);const labelWidth=48;const valueLines=doc.splitTextToSize(valueText,maxW-labelWidth);ensureSpace(valueLines.length*5+3);doc.text(labelText,margin,y);doc.setFont('helvetica',boldValue?'bold':'normal');doc.text(valueLines,margin+labelWidth,y);y+=valueLines.length*5+2;};
+      const addPara=(text,italic)=>{doc.setFont('helvetica',italic?'italic':'normal');doc.setFontSize(10);const lines=doc.splitTextToSize(String(text||'-'),maxW);ensureSpace(lines.length*5+3);doc.text(lines,margin,y);y+=lines.length*5+3;};
+      
+      addTitle('AyushCare Clinical Case Report');
+      addLine('Report ID:',r.reportId||'-');
+      addLine('Date:',new Date(r.createdAt||Date.now()).toLocaleString());
+      y+=2;
+      addHeading('1. PATIENT DETAILS');
+      addLine('Name:',r.patientName||'-',true);
+      addLine('Age / Gender:',(r.patientAge||'-')+' / '+(r.patientGender||'-'));
+      addLine('Mobile:',r.patientPhone||'-');
+      y+=2;
+      if(r.redFlag==='YES'){
+        ensureSpace(12);
+        doc.setFillColor(254,242,242);doc.setDrawColor(220,38,38);
+        doc.roundedRect(margin,y-4,maxW,10,2,2,'FD');
+        doc.setTextColor(153,27,27);doc.setFont('helvetica','bold');doc.setFontSize(10);
+        doc.text('URGENT: Red-flag symptom reported',margin+3,y+3);
+        doc.setTextColor(15,23,42);y+=12;
+      }
+      addHeading('2. CHIEF COMPLAINT');
+      addLine('Main Problem:',r.mainComplaint||'-',true);
+      addLine('Location:',r.location||'-');
+      addLine('Duration:',r.duration||'-');
+      addLine('Severity:',r.severity||'-',true);
+      addLine('Patient says:',r.problemDetails||'-');
+      y+=2;
+      addHeading('3. AGGRAVATING / RELIEVING');
+      addLine('Worse by:',r.worseBy||'-');
+      addLine('Better by:',r.betterBy||'-');
+      addLine('Other symptoms:',r.otherSymptoms||'-');
+      y+=2;
+      addHeading('4. MEDICAL HISTORY');
+      addLine('Existing conditions:',r.existingConditions||'-');
+      addLine('Allergies:',r.allergies||'-');
+      addLine('Current medicines:',r.currentMedicines||'-');
+      addLine('Family history:',r.familyHistory||'-');
+      y+=2;
+      addHeading('5. LIFESTYLE');
+      addLine('Appetite:',r.appetite||'-');
+      addLine('Digestion:',r.digestion||'-');
+      addLine('Sleep:',r.sleep||'-');
+      addLine('Stress:',r.stress||'-');
+      addLine('Exercise:',r.exercise||'-');
+      addLine('Habits:',r.habits||'-');
+      y+=2;
+      addHeading('6. PATIENT NOTES');
+      addPara(r.extraNotes||'-',true);
+      y+=2;
+      if(r.status==='reviewed'){
+        addHeading('7. DOCTOR REVIEW');
+        addLine('Status:','Reviewed',true);
+        addLine('Reviewed by:',r.reviewedBy||'Doctor');
+        addLine('Reviewed at:',r.reviewedAt?new Date(r.reviewedAt).toLocaleString():'-');
+        addLine('Clinical notes:',r.doctorNotes||'-');
+        addLine('Prescription (Rx):',r.doctorPrescription||'-');
+      }else{
+        addHeading('7. FOR DOCTOR USE ONLY');
+        addPara('Nadi / Jihva / Prakriti / Diagnosis / Treatment:');
+        ensureSpace(28);
+        doc.setDrawColor(100,116,139);
+        doc.roundedRect(margin,y,maxW,28,2,2);
+        y+=34;
+        doc.setFont('helvetica','normal');doc.setFontSize(10);
+        doc.line(pageW-margin-60,y,pageW-margin,y);
+        doc.text("Doctor's Signature",pageW-margin-60,y+5);
+        y+=12;
+      }
+      ensureSpace(16);
+      doc.setDrawColor(226,232,240);doc.line(margin,y,pageW-margin,y);y+=6;
+      doc.setFontSize(8);doc.setTextColor(100,116,139);
+      const footer=doc.splitTextToSize('AyushCare • Ministry of AYUSH • SIH26047',maxW);
+      doc.text(footer,margin,y);
+      doc.save('AyushCare_'+(r.reportId||'Report')+'.pdf');
+      toast(' PDF Downloaded','ok');
+      return;
+    }
+  }catch(err){console.error(err);}
+  toast(' PDF failed','err');
+}
+
+function waShare(){
+  if(!lastReport)return;
+  const r=lastReport;
+  const m=`* AyushCare Report*\n\n*ID:* ${r.reportId}\n*Patient:* ${r.patientName} (${r.patientAge}/${r.patientGender})\n*Mobile:* ${r.patientPhone}\n\n*Complaint:* ${r.mainComplaint}\n*Duration:* ${r.duration}\n*Severity:* ${r.severity}`;
+  window.open('https://wa.me/?text='+encodeURIComponent(m),'_blank');
+}
+
+/* ═══════════ REPORTS HISTORY ═══════════ */
+async function PageReports(a){
+  a.innerHTML=`<div class="hdr"><button class="hdr-btn" onclick="go(PageHome)">←</button><h1> ${t('myRep')}</h1><span style="width:40px"></span></div>
+  <div class="wrap"><div id="rl"><div class="card tc muted"> Loading from server...</div></div></div>${nav('rep')}`;
+  let reps=JSON.parse(localStorage.getItem('ac_rep_'+me.phone)||'[]');
+  const d=await safeFetch(API_URL+'/api/search?phone='+me.phone,{},60000);
+  if(d&&d.reports&&d.reports.length){reps=d.reports;localStorage.setItem('ac_rep_'+me.phone,JSON.stringify(reps));}
+  const el=document.getElementById('rl');
+  if(!reps.length){el.innerHTML=`<div class="card tc"><div style="font-size:56px"></div><div class="muted mt8">${t('noRep')}</div><button class="btn mt16" onclick="startCase()"> ${t('newCase')}</button></div>`;return;}
+  el.innerHTML=reps.map(r=>{
+    const sv=(r.severity||'').toLowerCase();
+    const cls=sv.includes('sever')||sv.includes('गंभीर')?'pill-r':sv.includes('mod')||sv.includes('मध्यम')?'pill-y':'pill-g';
+    const rev=r.status==='reviewed';
+    const safeR=encodeURIComponent(JSON.stringify(r));
+    const rid=String(r.reportId||'').replace(/'/g,'');
+    return `<div class="rep-card ${cls==='pill-r'?'sev':''} ${rev?'reviewed':''}">
+      <div class="between mb8"><span class="t-xs muted"> ${new Date(r.createdAt).toLocaleDateString()}</span><span class="pill ${cls}">${esc(r.severity)}</span></div>
+      ${rev?'<div class="review-badge"> Doctor Reviewed</div>':''}
+      <div class="bold green t-lg mt8">${esc(r.mainComplaint)}</div>
+      <div class="t-sm muted mt8"> ${esc(r.duration)} • ${esc(r.location||'-')}</div>
+      <div class="action-btns mt12">
+        <button class="btn btn-o btn-sm" onclick="viewRepFromEncoded('${safeR}')"> View / PDF</button>
+        <button class="btn btn-red btn-sm" onclick="deleteReport('${rid}')"> Delete</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function viewRepFromEncoded(s){
+  try{lastReport=JSON.parse(decodeURIComponent(s));go(PageDone);}
+  catch(e){toast(' Cannot open report','err');}
+}
+
+async function deleteReport(reportId){
+  if(!confirm(lang==='hi'?'क्या आप वाकई इस रिपोर्ट को हमेशा के लिए हटाना चाहते हैं?':'Delete this report permanently? This cannot be undone.'))return;
+  load(1);
+  let reps=JSON.parse(localStorage.getItem('ac_rep_'+me.phone)||'[]');
+  reps=reps.filter(r=>r.reportId!==reportId);
+  localStorage.setItem('ac_rep_'+me.phone,JSON.stringify(reps));
+  let inbox=getInbox();
+  inbox=inbox.filter(r=>r.reportId!==reportId);
+  setInbox(inbox);
+  const apiRes=await safeFetch(API_URL+'/api/report/'+encodeURIComponent(reportId)+'?phone='+me.phone,{method:'DELETE'},60000);
+  load(0);
+  if(apiRes&&apiRes.success)toast('Report deleted','ok');
+  else toast('Deleted locally (server sync pending)','warn');
+  go(PageReports);
+}
+
+/* ═══════════ AI ASSISTANT (Gemini via backend) ═══════════ */
+let aiHistory=[]; // {role:'user'|'ai', text} — kept client-side only, sent as context if needed later
+let aiBusy=false;
+
+function PageAI(a){
+  const QS=lang==='hi'?['बुखार है','सिरदर्द','पेट दर्द','नींद नहीं']:['I have fever','Headache','Stomach pain','Cannot sleep'];
+  aiHistory=[];
+  a.innerHTML=`<div class="hdr"><button class="hdr-btn" onclick="go(PageHome)">←</button><h1> ${t('aiAsst')}</h1><button class="hdr-btn" onclick="go(PageAI)"></button></div>
+  <div class="chat" id="chat">
+    <div class="bub ai"> ${lang==='hi'?'नमस्ते! मैं <b>आयुष मित्र</b> हूँ। मैं सामान्य सलाह व घरेलू उपाय बता सकता हूँ — दवा नहीं लिख सकता।':'Hello! I am <b>Ayush Mitra</b>. I can share general guidance and home remedies — I cannot prescribe medicine.'}</div>
+  </div>
+  <div class="quick">${QS.map(q=>`<button class="qbtn" onclick="quickAsk('${q.replace(/'/g,"\\'")}')">${q}</button>`).join('')}</div>
+  <div class="chat-bar">
+    <input id="ai" class="inp" placeholder="${t('typeMsg')}" onkeypress="if(event.key==='Enter')sendAI()">
+    <button class="mic" onclick="mic('ai',this)"></button>
+    <button class="mic" onclick="sendAI()"></button>
+  </div>`;
+}
+
+function quickAsk(q){document.getElementById('ai').value=q;sendAI();}
+
+/* Hard client-side safety net — checked BEFORE calling Gemini.
+   Emergencies always get the same instant, reliable reply; never left to the model. */
+function emergencyCheck(m){
+  const H=lang==='hi';const has=(...w)=>w.some(x=>m.includes(x));
+  if(has('chest pain','सीने में दर्द','can\'t breathe','breathless','सांस नहीं','unconscious','बेहोश','severe bleeding','ज्यादा खून','suicide','आत्महत्या','poison','जहर'))
+    return H?' यह आपातकाल हो सकता है। कृपया तुरंत <b>108</b> पर कॉल करें या नज़दीकी अस्पताल जाएं।':' This could be a medical emergency. Please call <b>108</b> immediately or go to the nearest hospital.';
+  return null;
+}
+
+function aiDisclaimerHTML(){
+  const H=lang==='hi';
+  return `<div class="t-xs muted mt8" style="border-top:1px solid var(--line);padding-top:8px">
+    ${H?'यह सामान्य जानकारी है, चिकित्सीय सलाह/प्रिस्क्रिप्शन नहीं। सही जांच के लिए डॉक्टर से मिलें।':'General information only, not a diagnosis or prescription. Please consult a doctor for proper care.'}
+    <button class="qbtn mt8" onclick="startCase()"> ${t('newCase')}</button>
+  </div>`;
+}
+
+async function sendAI(){
+  if(aiBusy)return;
+  const i=document.getElementById('ai');const m=(i.value||'').trim();if(!m)return;
+  const c=document.getElementById('chat');
+  c.innerHTML+=`<div class="bub me">${esc(m)}</div>`;i.value='';c.scrollTop=c.scrollHeight;
+  aiHistory.push({role:'user',text:m});
+
+  const emg=emergencyCheck(m.toLowerCase());
+  if(emg){
+    c.innerHTML+=`<div class="bub ai warn">${emg}<br><a href="tel:108" class="btn btn-red btn-sm mt8" style="display:inline-flex"> 108</a></div>`;
+    c.scrollTop=c.scrollHeight;return;
+  }
+
+  aiBusy=true;
+  const typingId='typing-'+Date.now();
+  c.innerHTML+=`<div class="bub ai" id="${typingId}"> ${lang==='hi'?'लिख रहा है...':'Typing...'}</div>`;
+  c.scrollTop=c.scrollHeight;
+
+  const {data,errDetail}=await aiFetch(API_URL+'/api/ai',{prompt:m,language:lang==='hi'?'Hindi':'English'},60000);
+  aiBusy=false;
+  const bub=document.getElementById(typingId);
+  if(!bub)return; // user navigated away
+
+  // Backend shape: {success:true, reply:"..."} on success, {success:false, fallback:true, message/error} on failure
+  let reply=data&&data.success&&data.reply?data.reply:null;
+  let bodyHTML;
+  if(reply){
+    aiHistory.push({role:'ai',text:reply});
+    bodyHTML=esc(reply).replace(/\n/g,'<br>');
+  }else{
+    const serverMsg=data&&(data.message||data.error);
+    bodyHTML=(lang==='hi'?' अभी जवाब नहीं मिल पाया। कृपया दोबारा कोशिश करें या डॉक्टर से सलाह लें।':' Could not get a response right now. Please try again or consult a doctor.')
+      +(errDetail||serverMsg?`<br><span class="t-xs muted">(debug: ${esc(errDetail||serverMsg)})</span>`:'');
+  }
+  bub.outerHTML=`<div class="bub ai">${bodyHTML}
+    <div class="row gap8 mt8"><button class="qbtn" onclick="speak(this.closest('.bub').innerText)"> ${t('listen')}</button></div>
+    ${aiDisclaimerHTML()}
+  </div>`;
+  c.scrollTop=c.scrollHeight;
+}
+
+/* Like safeFetch, but surfaces WHY a call failed (status code / network error / bad JSON)
+   so integration issues can be diagnosed instead of hidden behind a generic message. */
+async function aiFetch(url,body,timeoutMs){
+  if(!API_URL)return{data:null,errDetail:'API_URL not set'};
+  try{
+    const ctrl=new AbortController();
+    const timer=setTimeout(()=>ctrl.abort(),timeoutMs);
+    let res;
+    try{
+      res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:ctrl.signal});
+    }finally{clearTimeout(timer);}
+    if(!res.ok){
+      let bodyText='';try{bodyText=(await res.text()).slice(0,120);}catch(e){}
+      return{data:null,errDetail:`HTTP ${res.status}${bodyText?': '+bodyText:''}`};
+    }
+    const data=await res.json().catch(()=>null);
+    if(data===null)return{data:null,errDetail:'response was not valid JSON'};
+    return{data,errDetail:null};
+  }catch(e){
+    const detail=e.name==='AbortError'?`timed out after ${Math.round(timeoutMs/1000)}s (Render may be cold-starting)`:e.message;
+    return{data:null,errDetail:detail};
+  }
+}
+
+/* ═══════════ SOS ═══════════ */
+function PageSOS(a){
+  a.innerHTML=`<div class="hdr" style="background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff">
+    <button class="hdr-btn" style="background:rgba(255,255,255,.2);color:#fff" onclick="go(me?PageHome:PageWelcome)">←</button>
+    <h1 style="color:#fff"> ${t('emergency')}</h1><span style="width:40px"></span></div>
+  <div class="wrap">
+    <div class="tc mb16"><div style="font-size:88px" class="mic on"></div></div>
+    <a href="tel:108" class="btn btn-red mb12" style="padding:24px;font-size:20px"> 108 Ambulance</a>
+    <a href="tel:102" class="btn btn-saf mb12"> 102 Health</a>
+    <a href="tel:14416" class="btn btn-saf mb12"> 14416 Mental Health</a>
+    <a href="tel:1098" class="btn btn-saf mb12"> 1098 Child Helpline</a>
+    <button class="btn btn-blue mb12" onclick="window.open('https://www.google.com/maps/search/hospital+near+me','_blank')"> Nearest Hospital</button>
+  </div>${me?nav('sos'):''}`;
+}
+
+/* ═══════════ UPLOAD ═══════════ */
+function PageUpload(a){
+  const key='ac_docs_'+me.phone;
+  const docs=JSON.parse(localStorage.getItem(key)||'[]');
+  a.innerHTML=`<div class="hdr"><button class="hdr-btn" onclick="go(PageHome)">←</button><h1> ${t('upload')}</h1><span style="width:40px"></span></div>
+  <div class="wrap">
+    <div class="card">
+      <div class="t-lg bold green mb12">Upload Medical Report</div>
+      <input type="file" id="docfile" accept="image/*,.pdf" capture="environment" class="inp mb12" onchange="previewDoc(this)">
+      <input id="docname" class="inp mb12" placeholder="Report name">
+      <div id="docprev" class="mb12"></div>
+      <button class="btn" onclick="saveDoc()"> Save Report</button>
+    </div>
+    <div class="t-lg bold green mb12">Saved (${docs.length})</div>
+    <div>${docs.length?docs.map((d,i)=>`
+      <div class="rep-card">
+        <div class="between mb8"><div class="bold">${esc(d.name)}</div><button class="hdr-btn" onclick="delDoc(${i})"></button></div>
+        <div class="t-xs muted mb8">${new Date(d.date).toLocaleString()}</div>
+        ${d.data.startsWith('data:image')?`<img src="${d.data}" class="doc-img">`:`<div class="alert alert-ok"> File saved</div>`}
+      </div>`).join(''):`<div class="card tc muted">No documents yet</div>`}</div>
+  </div>`;
+}
+function previewDoc(input){
+  const f=input.files&&input.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    window._docData=e.target.result;
+    const p=document.getElementById('docprev');
+    if(f.type.startsWith('image/'))p.innerHTML=`<img src="${e.target.result}" class="doc-img">`;
+    else p.innerHTML=`<div class="alert alert-ok"> ${esc(f.name)} ready</div>`;
+    if(!document.getElementById('docname').value)document.getElementById('docname').value=f.name.replace(/\.[^.]+$/,'');
+  };
+  r.readAsDataURL(f);
+}
+function saveDoc(){
+  if(!window._docData){toast(' Choose file first','warn');return;}
+  const name=(document.getElementById('docname').value||'Medical Report').trim();
+  const key='ac_docs_'+me.phone;
+  const docs=JSON.parse(localStorage.getItem(key)||'[]');
+  docs.unshift({name,data:window._docData,date:new Date().toISOString()});
+  try{localStorage.setItem(key,JSON.stringify(docs));window._docData=null;toast(' Saved','ok');go(PageUpload);}
+  catch(e){toast(' File too large','err');}
+}
+function delDoc(i){
+  const key='ac_docs_'+me.phone;
+  const docs=JSON.parse(localStorage.getItem(key)||'[]');
+  docs.splice(i,1);localStorage.setItem(key,JSON.stringify(docs));
+  toast(' Deleted','ok');go(PageUpload);
+}
+
+/* ═══════════ MEDICINE ═══════════ */
+function PageMeds(a){
+  const key='ac_meds_'+me.phone;
+  const meds=JSON.parse(localStorage.getItem(key)||'[]');
+  F.mfreq=F.mfreq||'Daily';
+  a.innerHTML=`<div class="hdr"><button class="hdr-btn" onclick="go(PageHome)">←</button><h1> ${t('medRem')}</h1><span style="width:40px"></span></div>
+  <div class="wrap">
+    <div class="card">
+      <div class="t-lg bold green mb12">Add Medicine</div>
+      <label class="lbl">Name</label><input id="mname" class="inp mb12" placeholder="e.g. Ashwagandha">
+      <label class="lbl">Dose</label><input id="mdose" class="inp mb12" placeholder="e.g. 1 tablet">
+      <label class="lbl">Time</label><input id="mtime" class="inp mb12" type="time" value="09:00">
+      <label class="lbl">Frequency</label>
+      <div class="opts c3 mb12">
+        <button class="opt on" onclick="pick(this,'mfreq','Daily')">Daily</button>
+        <button class="opt" onclick="pick(this,'mfreq','Twice')">Twice</button>
+        <button class="opt" onclick="pick(this,'mfreq','Custom')">Custom</button>
+      </div>
+      <button class="btn" onclick="saveMed()"> Add Reminder</button>
+    </div>
+    <div class="t-lg bold green mb12">Your Medicines (${meds.length})</div>
+    <div>${meds.length?meds.map((m,i)=>`
+      <div class="rep-card">
+        <div class="between"><div>
+          <div class="bold green t-lg"> ${esc(m.name)}</div>
+          <div class="t-sm muted mt8">${esc(m.dose)} • ${esc(m.time)} • ${esc(m.freq)}</div>
+        </div><button class="hdr-btn" onclick="delMed(${i})"></button></div>
+        <button class="btn btn-o btn-sm mt12" onclick="testMedAlert('${esc(m.name)}','${esc(m.dose)}')"> Test Alert</button>
+      </div>`).join(''):`<div class="card tc muted">No reminders</div>`}</div>
+  </div>`;
+  requestMedPermission();scheduleMedChecks();
+}
+function saveMed(){
+  const name=(document.getElementById('mname').value||'').trim();
+  const dose=(document.getElementById('mdose').value||'').trim()||'1 dose';
+  const time=document.getElementById('mtime').value||'09:00';
+  if(!name){toast(' Enter name','warn');return;}
+  const key='ac_meds_'+me.phone;
+  const meds=JSON.parse(localStorage.getItem(key)||'[]');
+  meds.unshift({name,dose,time,freq:F.mfreq||'Daily',createdAt:new Date().toISOString()});
+  localStorage.setItem(key,JSON.stringify(meds));
+  toast(' Added','ok');scheduleMedChecks();go(PageMeds);
+}
+function delMed(i){
+  const key='ac_meds_'+me.phone;
+  const meds=JSON.parse(localStorage.getItem(key)||'[]');
+  meds.splice(i,1);localStorage.setItem(key,JSON.stringify(meds));
+  toast(' Deleted','ok');go(PageMeds);
+}
+function testMedAlert(name,dose){
+  toast(` Time for <b>${name}</b><br>${dose}`,'ok');
+  speak(lang==='hi'?`दवा लेने का समय: ${name}`:`Medicine time: ${name}`);
+  if(navigator.vibrate)navigator.vibrate([200,100,200]);
+}
+async function requestMedPermission(){
+  try{if('Notification' in window&&Notification.permission==='default')await Notification.requestPermission();}catch(e){}
+}
+function scheduleMedChecks(){
+  if(window._medTimer)clearInterval(window._medTimer);
+  window._medTimer=setInterval(()=>{
+    if(!me)return;
+    const meds=JSON.parse(localStorage.getItem('ac_meds_'+me.phone)||'[]');
+    const now=new Date();
+    const cur=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+    meds.forEach(m=>{
+      if(m.time===cur){
+        const stamp=cur+m.name;
+        if(window._lastMedStamp===stamp)return;
+        window._lastMedStamp=stamp;
+        toast(` <b>${m.name}</b> • ${m.dose}`,'ok');
+        speak(lang==='hi'?`दवा: ${m.name}`:`Medicine: ${m.name}`);
+        try{if('Notification' in window&&Notification.permission==='granted')new Notification('AyushCare',{body:`${m.name} • ${m.dose}`});}catch(e){}
+        if(navigator.vibrate)navigator.vibrate([300,150,300]);
+      }
+    });
+  },15000);
+}
+
+/* ═══════════ FAMILY ═══════════ */
+function PageFamily(a){
+  const key='ac_family_'+me.phone;
+  const fam=JSON.parse(localStorage.getItem(key)||'[]');
+  F.frel=F.frel||'Father';F.fgender=F.fgender||'Male';
+  a.innerHTML=`<div class="hdr"><button class="hdr-btn" onclick="go(PageHome)">←</button><h1> ${t('family')}</h1><span style="width:40px"></span></div>
+  <div class="wrap">
+    <div class="card">
+      <div class="t-lg bold green mb12">Add Family Member</div>
+      <label class="lbl">Name</label><input id="fname" class="inp mb12" placeholder="Name">
+      <label class="lbl">Relation</label>
+      <div class="opts c3 mb12">
+        <button class="opt on" onclick="pick(this,'frel','Father')">Father</button>
+        <button class="opt" onclick="pick(this,'frel','Mother')">Mother</button>
+        <button class="opt" onclick="pick(this,'frel','Spouse')">Spouse</button>
+        <button class="opt" onclick="pick(this,'frel','Child')">Child</button>
+        <button class="opt" onclick="pick(this,'frel','Sibling')">Sibling</button>
+        <button class="opt" onclick="pick(this,'frel','Other')">Other</button>
+      </div>
+      <label class="lbl">Age</label><input id="fage" class="inp mb12" type="number">
+      <label class="lbl">Gender</label>
+      <div class="opts c3 mb12">
+        <button class="opt on" onclick="pick(this,'fgender','Male')">Male</button>
+        <button class="opt" onclick="pick(this,'fgender','Female')">Female</button>
+        <button class="opt" onclick="pick(this,'fgender','Other')">Other</button>
+      </div>
+      <label class="lbl">Phone</label><input id="fphone" class="inp mb12" type="tel" maxlength="10">
+      <button class="btn" onclick="saveFamily()"> Add</button>
+    </div>
+    <div class="t-lg bold green mb12">Members (${fam.length})</div>
+    <div>${fam.length?fam.map((f,i)=>`
+      <div class="rep-card">
+        <div class="between"><div>
+          <div class="bold t-lg">${esc(f.name)}</div>
+          <div class="t-sm muted mt8">${esc(f.relation)} • ${esc(f.age)}y • ${esc(f.gender)}${f.phone?' • '+esc(f.phone):''}</div>
+        </div><button class="hdr-btn" onclick="delFamily(${i})"></button></div>
+        <button class="btn btn-o btn-sm mt12" onclick='startFamilyCase(${JSON.stringify(JSON.stringify(f))})'> Consultation</button>
+      </div>`).join(''):`<div class="card tc muted">No family members</div>`}</div>
+  </div>`;
+}
+function saveFamily(){
+  const name=(document.getElementById('fname').value||'').trim();
+  const age=parseInt(document.getElementById('fage').value)||0;
+  const phone=normPhone(document.getElementById('fphone').value);
+  if(!name){toast(' Enter name','warn');return;}
+  const key='ac_family_'+me.phone;
+  const fam=JSON.parse(localStorage.getItem(key)||'[]');
+  fam.unshift({name,age,gender:F.fgender||'Other',relation:F.frel||'Other',phone,createdAt:new Date().toISOString()});
+  localStorage.setItem(key,JSON.stringify(fam));
+  toast(' Added','ok');go(PageFamily);
+}
+function delFamily(i){
+  const key='ac_family_'+me.phone;
+  const fam=JSON.parse(localStorage.getItem(key)||'[]');
+  fam.splice(i,1);localStorage.setItem(key,JSON.stringify(fam));
+  toast(' Removed','ok');go(PageFamily);
+}
+function startFamilyCase(s){
+  const f=JSON.parse(s);
+  window._originalMe=me;
+  me={name:f.name,age:f.age,gender:f.gender,phone:f.phone||(me.phone+'-F'+Date.now().toString().slice(-3)),address:me.address||'',language:lang,isFamily:true,mainAccountPhone:window._originalMe.phone};
+  toast(' Consultation for '+f.name,'ok');
+  startCase();
+}
+
+/* ═══════════ DOCTOR LOGIN (6 accounts) ═══════════ */
+function PageDocLogin(a){
+  a.innerHTML=`<div class="hdr">
+    <button class="hdr-btn" onclick="go(PageWelcome)">←</button>
+    <h1>${t('docLogin')}</h1>
+    <span style="width:40px"></span></div>
+  <div class="wrap" style="padding-top:30px"><div class="card">
+    <label class="lbl">Email</label>
+    <input id="de" class="inp mb16" placeholder="Enter your email">
+    <label class="lbl">Password</label>
+    <input id="dp" class="inp mb16" type="password" placeholder="Enter password">
+    <button class="btn" onclick="docLogin()">Login</button>
+  </div></div>`;
+}
+function docLogin(){
+  const email=(document.getElementById('de').value||'').trim().toLowerCase();
+  const pass=(document.getElementById('dp').value||'').trim();
+  const found=DOCTORS.find(d=>d.email.toLowerCase()===email&&d.password===pass);
+  if(!found){toast(' Invalid email or password','err');return;}
+  currentDoctor=found;
+  localStorage.setItem('ac_doctor',JSON.stringify(found));
+  toast(' Welcome '+found.name,'ok');
+  go(PageDoc);
+}
+function doctorLogout(){currentDoctor=null;localStorage.removeItem('ac_doctor');go(PageWelcome);}
+
+/* ═══════════ DOCTOR DASHBOARD ═══════════ */
+function PageDoc(a){
+  if(!currentDoctor){go(PageDocLogin);return;}
+  a.innerHTML=`<div class="hdr">
+    <h1> ${esc(currentDoctor.name)}</h1>
+    <button class="hdr-btn dark" onclick="doctorLogout()">Logout</button></div>
+  <div class="wrap-lg">
+    <div class="alert alert-ok mb12">Logged in as <b>${esc(currentDoctor.name)}</b></div>
+    <div id="dstats" class="tiles mb16"></div>
+    <div class="card">
+      <div class="t-lg bold green mb12"> Search Patient by Mobile</div>
+      <div class="inp-row">
+        <input id="ds" class="inp" type="tel" placeholder="9876543210" onkeypress="if(event.key==='Enter')docSearch()">
+        <button class="btn btn-sm" style="width:auto;padding:0 22px" onclick="docSearch()"></button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="between mb12">
+        <div class="t-lg bold green"> Patient Inbox</div>
+        <button class="btn btn-o btn-sm" onclick="loadInbox(true)"> Refresh</button>
+      </div>
+      <div class="cats">
+        <button class="chip ${docFilter==='pending'?'on':''}" onclick="docFilter='pending';loadInbox(true)"> New</button>
+        <button class="chip ${docFilter==='reviewed'?'on':''}" onclick="docFilter='reviewed';loadInbox(true)"> Reviewed</button>
+        <button class="chip ${docFilter===''?'on':''}" onclick="docFilter='';loadInbox(true)"> All</button>
+      </div>
+    </div>
+    <div id="dr"></div>
+  </div>`;
+  loadInbox(true);
+}
+
+async function loadInbox(forceNetwork){
+  const el=document.getElementById('dr');
+  if(!el)return;
+  el.innerHTML=`<div class="card tc muted"> Loading from server... (may take 30-60s if server was sleeping)</div>`;
+  let apiData=await safeFetch(API_URL+'/api/doctor/reports'+(docFilter?('?status='+docFilter):''),{},60000);
+  let reps=[];
+  if(apiData&&Array.isArray(apiData.reports)){
+    reps=apiData.reports;
+    setInbox(reps);
+    const s=apiData.stats||{};
+    const statsEl=document.getElementById('dstats');
+    if(statsEl){
+      statsEl.innerHTML=`
+        <div class="tile"><span class="ic"></span><span class="tx">Pending<br><b style="font-size:19px;color:#047857">${s.pending||0}</b></span></div>
+        <div class="tile"><span class="ic"></span><span class="tx">Urgent<br><b style="font-size:19px;color:#dc2626">${s.urgent||0}</b></span></div>
+        <div class="tile"><span class="ic"></span><span class="tx">Reviewed<br><b style="font-size:19px;color:#047857">${s.reviewed||0}</b></span></div>
+        <div class="tile"><span class="ic"></span><span class="tx">Patients<br><b style="font-size:19px;color:#047857">${s.patients||0}</b></span></div>`;
+    }
+  }else{
+    let all=getInbox();
+    reps=all.slice();
+    if(docFilter==='pending')reps=reps.filter(r=>r.status!=='reviewed');
+    if(docFilter==='reviewed')reps=reps.filter(r=>r.status==='reviewed');
+    const urgent=all.filter(r=>r.redFlag==='YES'&&r.status!=='reviewed').length;
+    const done=all.filter(r=>r.status==='reviewed').length;
+    const pend=all.filter(r=>r.status!=='reviewed').length;
+    const statsEl=document.getElementById('dstats');
+    if(statsEl){
+      statsEl.innerHTML=`
+        <div class="tile"><span class="ic"></span><span class="tx">Pending<br><b style="font-size:19px;color:#047857">${pend}</b></span></div>
+        <div class="tile"><span class="ic"></span><span class="tx">Urgent<br><b style="font-size:19px;color:#dc2626">${urgent}</b></span></div>
+        <div class="tile"><span class="ic"></span><span class="tx">Reviewed<br><b style="font-size:19px;color:#047857">${done}</b></span></div>
+        <div class="tile"><span class="ic"></span><span class="tx">Mode<br><b style="font-size:14px;color:#f59e0b">Offline</b></span></div>`;
+    }
+    if(forceNetwork)toast(' Server slow/offline. Showing local data.','warn');
+  }
+  reps=(reps||[]).map(r=>({...r,patientPhone:normPhone(r.patientPhone),status:r.status||'pending'}));
+  if(!reps.length){
+    el.innerHTML=`<div class="card tc"><div style="font-size:56px"></div><div class="muted mt8">No reports</div><button class="btn btn-o mt12" onclick="loadInbox(true)"> Refresh</button></div>`;
+    return;
+  }
+  el.innerHTML=reps.map(r=>docCard(r)).join('');
+}
+
+function docCard(r){
+  const sv=(r.severity||'').toLowerCase();
+  const cls=sv.includes('sever')||sv.includes('गंभीर')?'pill-r':sv.includes('mod')||sv.includes('मध्यम')?'pill-y':'pill-g';
+  const rid=String(r.reportId||'').replace(/'/g,'');
+  const rev=r.status==='reviewed';
+  const safeR=encodeURIComponent(JSON.stringify(r));
+  return `<div class="rep-card ${cls==='pill-r'?'sev':''} ${rev?'reviewed':''}" id="card-${rid}">
+    <div class="between mb8">
+      <span class="t-xs muted"> ${new Date(r.createdAt||Date.now()).toLocaleString()}</span>
+      <div>${rev?'<span class="pill pill-b"> Reviewed</span> ':''}<span class="pill ${cls}">${esc(r.severity||'-')}</span></div>
+    </div>
+    ${r.redFlag==='YES'?`<div class="alert alert-red mb8"> <b>RED FLAG</b></div>`:''}
+    <div class="bold t-lg">${esc(r.patientName||'Patient')} <span class="t-sm muted">• ${esc(r.patientAge||'-')}y ${esc(r.patientGender||'')} • ${esc(r.patientPhone||'')}</span></div>
+    <div class="bold green t-lg mt8"> ${esc(r.mainComplaint||'-')}</div>
+    <div class="rv"><span class="k">Location</span><span class="v">${esc(r.location||'-')}</span></div>
+    <div class="rv"><span class="k">Duration</span><span class="v">${esc(r.duration||'-')}</span></div>
+    <div class="rv"><span class="k">Details</span><span class="v">${esc(r.problemDetails||'-')}</span></div>
+    <div class="rv"><span class="k">Worse by</span><span class="v">${esc(r.worseBy||'-')}</span></div>
+    <div class="rv"><span class="k">Better by</span><span class="v">${esc(r.betterBy||'-')}</span></div>
+    <div class="rv"><span class="k">Other sym</span><span class="v">${esc(r.otherSymptoms||'-')}</span></div>
+    <div class="rv"><span class="k">Conditions</span><span class="v">${esc(r.existingConditions||'-')}</span></div>
+    <div class="rv"><span class="k">Allergies</span><span class="v" style="color:#dc2626">${esc(r.allergies||'-')}</span></div>
+    <div class="rv"><span class="k">Medicines</span><span class="v">${esc(r.currentMedicines||'-')}</span></div>
+    <div class="rv"><span class="k">Sleep</span><span class="v">${esc(r.sleep||'-')}</span></div>
+    <div class="rv"><span class="k">Stress</span><span class="v">${esc(r.stress||'-')}</span></div>
+    <div class="rv"><span class="k">Notes</span><span class="v">${esc(r.extraNotes||'-')}</span></div>
+    <div class="t-xs muted mt8"> ${esc(r.reportId||'-')}</div>
+    <div id="review-box-${rid}">
+      ${rev?`
+        <div class="alert alert-blue mt12"> <div>
+          <b>Reviewed by ${esc(r.reviewedBy||'Doctor')}</b><br>
+          ${r.reviewedAt?new Date(r.reviewedAt).toLocaleString():''}
+          ${r.doctorNotes?'<br><b>Notes:</b> '+esc(r.doctorNotes):''}
+          ${r.doctorPrescription?'<br><b>Rx:</b> '+esc(r.doctorPrescription):''}
+        </div></div>
+        <div class="action-btns">
+          <button class="btn btn-o btn-sm" onclick="openEditReview('${rid}')"> Edit Review</button>
+          <button class="btn btn-saf btn-sm" onclick="unmarkReview('${rid}')">↩ Unmark</button>
+        </div>
+        <button class="btn btn-sm mt8" style="width:100%" onclick="viewRepFromEncoded('${safeR}')"> View / PDF</button>
+      `:`
+        <textarea id="dn-${rid}" class="inp mt12" placeholder="Clinical notes / Diagnosis / Prakriti..."></textarea>
+        <textarea id="dp-${rid}" class="inp mt8" placeholder="Prescription (Rx)..."></textarea>
+        <div class="action-btns">
+          <button class="btn btn-sm" onclick="markReviewed('${rid}')"> Mark Reviewed</button>
+          <button class="btn btn-o btn-sm" onclick="viewRepFromEncoded('${safeR}')"> PDF</button>
+        </div>
+      `}
+    </div>
+  </div>`;
+}
+
+async function markReviewed(rid){
+  const notes=(document.getElementById('dn-'+rid)?.value||'').trim();
+  const rx=(document.getElementById('dp-'+rid)?.value||'').trim();
+  load(1);
+  let inbox=getInbox();
+  let rep=inbox.find(r=>r.reportId===rid)||{reportId:rid};
+  const updated={...rep,status:'reviewed',doctorNotes:notes,doctorPrescription:rx,reviewedAt:new Date().toISOString(),reviewedBy:currentDoctor?currentDoctor.name:'Doctor'};
+  upsertLocalReport(updated);
+  const apiRes=await safeFetch(API_URL+'/api/doctor/review',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reportId:rid,doctorNotes:notes,doctorPrescription:rx,reviewedBy:currentDoctor?currentDoctor.name:'Doctor'})},60000);
+  load(0);
+  if(apiRes&&apiRes.success)toast(' Reviewed & synced','ok');
+  else toast(' Reviewed locally (server sync pending)','warn');
+  loadInbox(true);
+}
+
+function openEditReview(rid){
+  const inbox=getInbox();
+  let rep=inbox.find(r=>r.reportId===rid)||{reportId:rid,doctorNotes:'',doctorPrescription:''};
+  const box=document.getElementById('review-box-'+rid);
+  if(!box){toast(' Cannot open editor','err');return;}
+  box.innerHTML=`
+    <div class="alert alert-warn mt12"> <div><b>Editing Review</b></div></div>
+    <textarea id="edit-n-${rid}" class="inp mt8" placeholder="Clinical notes">${esc(rep.doctorNotes||'')}</textarea>
+    <textarea id="edit-p-${rid}" class="inp mt8" placeholder="Prescription">${esc(rep.doctorPrescription||'')}</textarea>
+    <div class="action-btns">
+      <button class="btn btn-sm" onclick="saveEditReview('${rid}')"> Save Changes</button>
+      <button class="btn btn-gray btn-sm" onclick="loadInbox(true)">Cancel</button>
+    </div>`;
+}
+
+async function saveEditReview(rid){
+  const notes=(document.getElementById('edit-n-'+rid)?.value||'').trim();
+  const rx=(document.getElementById('edit-p-'+rid)?.value||'').trim();
+  load(1);
+  const inbox=getInbox();
+  const old=inbox.find(r=>r.reportId===rid)||{reportId:rid};
+  const updated={...old,status:'reviewed',doctorNotes:notes,doctorPrescription:rx,reviewedAt:new Date().toISOString(),reviewedBy:currentDoctor?currentDoctor.name:'Doctor'};
+  upsertLocalReport(updated);
+  const apiRes=await safeFetch(API_URL+'/api/doctor/review',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reportId:rid,doctorNotes:notes,doctorPrescription:rx,reviewedBy:currentDoctor?currentDoctor.name:'Doctor'})},60000);
+  load(0);
+  if(apiRes&&apiRes.success)toast(' Review updated','ok');
+  else toast(' Updated locally (server pending)','warn');
+  loadInbox(true);
+}
+
+async function unmarkReview(rid){
+  if(!confirm('Move this report back to New?'))return;
+  load(1);
+  const inbox=getInbox();
+  const old=inbox.find(r=>r.reportId===rid)||{reportId:rid};
+  const updated={...old,status:'pending',reviewedAt:null};
+  upsertLocalReport(updated);
+  const apiRes=await safeFetch(API_URL+'/api/doctor/unmark',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({reportId:rid})},60000);
+  load(0);
+  if(apiRes&&apiRes.success)toast('↩ Moved to New','ok');
+  else toast('↩ Local unmark done (server pending)','warn');
+  loadInbox(true);
+}
+
+async function docSearch(){
+  const ph=normPhone(document.getElementById('ds').value);
+  if(ph.length!==10){toast(' 10-digit','err');return;}
+  const el=document.getElementById('dr');
+  el.innerHTML=`<div class="card tc muted"> Searching...</div>`;
+  const d=await safeFetch(API_URL+'/api/search?phone='+ph,{},60000);
+  let patient=null;let reports=[];
+  if(d&&d.patient){patient=d.patient;reports=d.reports||[];}
+  else{const inbox=getInbox();reports=inbox.filter(r=>normPhone(r.patientPhone)===ph);
+    if(reports.length)patient={name:reports[0].patientName,age:reports[0].patientAge,gender:reports[0].patientGender,phone:ph};}
+  if(!patient){el.innerHTML=`<div class="card tc"><div style="font-size:52px"></div><div class="muted mt8">Not found</div></div>`;return;}
+  el.innerHTML=`<div class="card-hero mb16">
+    <div class="t-sm" style="opacity:.9">Patient</div>
+    <div class="t-xl bold">${esc(patient.name)}</div>
+    <div class="t-sm mt8">${esc(patient.age)}y • ${esc(patient.gender)} • ${esc(patient.phone)}</div>
+  </div>
+  <div class="t-lg bold green mb12"> Reports (${reports.length})</div>
+  ${reports.length?reports.map(r=>docCard(r)).join(''):`<div class="card tc muted">No reports</div>`}`;
+}
+
+/* ═══════════ BOOT ═══════════ */
+try{
+  if(currentDoctor)go(PageDoc);
+  else if(me&&me.name&&me.phone)go(PageHome);
+  else go(PageLang);
+}catch(e){console.error(e);localStorage.clear();go(PageLang);}
+</script>
+</body>
+</html>
