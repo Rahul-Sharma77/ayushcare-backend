@@ -129,13 +129,16 @@ const Report = mongoose.model(
 // =====================================================
 
 let ai = null;
+const GEMINI_KEY = (process.env.GEMINI_API_KEY || '').trim();
 
-if (process.env.GEMINI_API_KEY) {
+if (GEMINI_KEY) {
   ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY
+    apiKey: GEMINI_KEY
   });
 
-  console.log('✅ Gemini API configured');
+  console.log(
+    `✅ Gemini API configured (key length: ${GEMINI_KEY.length})`
+  );
 } else {
   console.log(
     '⚠️ GEMINI_API_KEY not set — /api/ai will return fallback responses'
@@ -395,7 +398,7 @@ app.get('/', (req, res) => {
       mongoose.connection.readyState === 1
         ? 'Connected'
         : 'Disconnected',
-    ai: process.env.GEMINI_API_KEY
+    ai: GEMINI_KEY
       ? 'Configured'
       : 'Not configured'
   });
@@ -673,3 +676,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on ${PORT}`);
 });
+                         
